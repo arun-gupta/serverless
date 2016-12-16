@@ -3,3 +3,21 @@
 . Write the http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html[code]
 .. http://docs.aws.amazon.com/lambda/latest/dg/java-create-jar-pkg-maven-no-ide.html[sample `pom.xml`]
 . Create http://docs.aws.amazon.com/lambda/latest/dg/lambda-java-how-to-create-deployment-package.html[deployment package]
+. Create a function:
++
+```
+aws lambda create-function \
+--function-name HelloWorld \
+--role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
+--handler org.sample.serverless.aws.helloworld.HelloWorld \
+--zip-file fileb:///Users/arungupta/workspaces/serverless/aws/helloworld/helloworld/target/helloworld-1.0-SNAPSHOT.jar \
+--description "Java Hello World" \
+--runtime java8  \
+--region us-west-1 \
+--timeout 30 \
+--memory-size 1024 \
+--publish
+```
++
+.. Get role from https://console.aws.amazon.com/iam/home?region=us-west-1#/roles
+.. No way to override the function definition, gives the error `An error occurred (ResourceConflictException) when calling the CreateFunction operation: Function already exist: HelloWorld`
