@@ -42,3 +42,22 @@ Shows an output as:
 +
 .. Get role from https://console.aws.amazon.com/iam/home?region=us-west-1#/roles
 .. No way to override the function definition, gives the error `An error occurred (ResourceConflictException) when calling the CreateFunction operation: Function already exist: HelloWorld`
+. Test the function:
++
+```
+aws lambda invoke \
+--function-name HelloWorld \
+--region us-west-1 \
+--payload '{ "firstName": "John", "lastName": "Smith" }' \
+helloworld.out
+```
++
+Shows the result:
++
+```
+{
+    "StatusCode": 200
+}
+```
++
+Output from the command is in `helloworld.out`.
