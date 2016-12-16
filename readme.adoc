@@ -4,6 +4,8 @@
 
 https://aws.amazon.com/lambda/
 
+Java + Lambda: http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html
+
 == Google Cloud Functions
 
 https://cloud.google.com/functions/

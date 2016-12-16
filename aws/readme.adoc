@@ -1,0 +1,5 @@
+= Amazon Web Services Lambda Functions
+
+. Write the http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html[code]
+.. http://docs.aws.amazon.com/lambda/latest/dg/java-create-jar-pkg-maven-no-ide.html[sample `pom.xml`]
+. Create http://docs.aws.amazon.com/lambda/latest/dg/lambda-java-how-to-create-deployment-package.html[deployment package]
