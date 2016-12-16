@@ -1,0 +1,14 @@
+= Serverless Samples
+
+== Amazon Web Services Lamda
+
+https://aws.amazon.com/lambda/
+
+== Google Cloud Functions
+
+https://cloud.google.com/functions/
+
+== Azure Functions
+
+https://azure.microsoft.com/en-us/services/functions/
+
