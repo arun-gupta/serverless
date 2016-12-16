@@ -21,7 +21,7 @@ aws lambda create-function \
 --publish
 ```
 +
-Shows an output as:
+Shows output:
 +
 ```
 {
@@ -52,7 +52,7 @@ aws lambda invoke \
 helloworld.out
 ```
 +
-Shows the result:
+Shows result:
 +
 ```
 {
