@@ -1,5 +1,7 @@
 = Amazon Web Services Lambda Functions
 
+Java + Lambda: http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html
+
 . Write the http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html[code]
 .. http://docs.aws.amazon.com/lambda/latest/dg/java-create-jar-pkg-maven-no-ide.html[sample `pom.xml`]
 . Create http://docs.aws.amazon.com/lambda/latest/dg/lambda-java-how-to-create-deployment-package.html[deployment package]
@@ -17,6 +19,25 @@ aws lambda create-function \
 --timeout 30 \
 --memory-size 1024 \
 --publish
+```
++
+Shows an output as:
++
+```
+{
+    "CodeSha256": "7kxVI356SYg7vg9BdLRSEJ2U7MaMbhwOZG9P7iNlMsM=", 
+    "FunctionName": "HelloWorld", 
+    "CodeSize": 11782, 
+    "MemorySize": 1024, 
+    "FunctionArn": "arn:aws:lambda:us-west-1:598307997273:function:HelloWorld", 
+    "Version": "2", 
+    "Role": "arn:aws:iam::598307997273:role/service-role/myLambdaRole", 
+    "Timeout": 30, 
+    "LastModified": "2016-12-16T03:02:34.590+0000", 
+    "Handler": "org.sample.serverless.aws.helloworld.HelloWorld", 
+    "Runtime": "java8", 
+    "Description": "Java Hello World"
+}
 ```
 +
 .. Get role from https://console.aws.amazon.com/iam/home?region=us-west-1#/roles
