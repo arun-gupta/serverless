@@ -21,6 +21,8 @@ aws lambda create-function \
 --publish
 ```
 +
+.. Get role name from https://console.aws.amazon.com/iam/home?region=us-west-1#/roles
++
 Shows output:
 +
 ```
@@ -40,7 +42,6 @@ Shows output:
 }
 ```
 +
-.. Get role from https://console.aws.amazon.com/iam/home?region=us-west-1#/roles
 .. No way to override the function definition, gives the error `An error occurred (ResourceConflictException) when calling the CreateFunction operation: Function already exist: HelloWorld`
 . Test the function:
 +
