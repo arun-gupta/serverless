@@ -61,3 +61,44 @@ Shows result:
 ```
 +
 Output from the command is in `helloworld.out`.
++
+. Update the function:
++
+```
+aws lambda update-function-code \
+  --function-name HelloWorld \
+  --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/helloworld/helloworld/target/helloworld-1.0-SNAPSHOT.jar \
+  --region us-west-1 \
+  --publish
+```
++
+. Get more details about the function:
++
+```
+aws lambda get-function --function-name HelloWorld --region us-west-1
+```
++
+Shows output:
++
+```
+{
+    "Code": {
+        "RepositoryType": "S3", 
+        "Location": "https://awslambda-us-west-1-tasks.s3-us-west-1.amazonaws.com/snapshots/598307997273/HelloWorld-b3621a51-aa28-498a-9a69-7541bc9a50f5?X-Amz-Security-Token=FQoDYXdzEEwaDPvHdO71iR5QlQxFpSK3AwIyaqiqO6N47IcWGJios%2FvWg79kcFh%2BVRHCfstcCWFCs2qC5ojZ4r%2F4LEmFL6aLTSNVZEpfJwSpi3a2xpYgqUdd3jJfR7nK8XnTqbF2n87xUANO1xnnRryNlDFpVLwTBOq5haCSqNXoQLgVEA6RNzhmOpNEBN136dnebVtGFZkkweXE7SHtV%2BzVfGzShgxWIDj8oCr2YEREIVdfmlRZ7QnMYKCfUIGDezC0iLIQeXnwMvZp1BC6dq6CDC6KOiZ6kp8SxJikKnoiSFtYcDPQacNl05fqbt7cGFmdtrHbRLyibYxCwB%2FsXQueA7iXiuVARVzOw9HvIEnvN5geT68r%2Fy0DnlRUPtw5ZUu%2FHT66uNGEn8pS8ki6k2fQWbSoIploBGA7l8H%2FmqEmg7dlc68UKnmYLaAv8GDInA9K7ndL%2Fs0%2BD3Gv7WJMEPXiOpTuh1lvRZ%2BGXXwQcuDfZX0i3L6elgFfDPh7CIpwZGvYmn22oiU%2Bgqc%2FjDSvGaOTzLGMjSodfaN%2BuhFvFAcv%2FsAUtIgZ5LksFkC%2FW189CzLFS7HyIE%2BofPUesP75p67Rm2G%2FDBWfkaYq886GRfIo8c%2FgwgU%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20161219T195528Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIAJLAOLVLJ3LXPJOFQ%2F20161219%2Fus-west-1%2Fs3%2Faws4_request&X-Amz-Signature=82d2497a61e9ae749901b8532b77cf9cbbdff8db33538bd74a1d0ee9d4cf61c8"
+    }, 
+    "Configuration": {
+        "Version": "$LATEST", 
+        "CodeSha256": "7kxVI356SYg7vg9BdLRSEJ2U7MaMbhwOZG9P7iNlMsM=", 
+        "FunctionName": "HelloWorld", 
+        "MemorySize": 1024, 
+        "CodeSize": 11782, 
+        "FunctionArn": "arn:aws:lambda:us-west-1:598307997273:function:HelloWorld", 
+        "Handler": "org.sample.serverless.aws.helloworld.HelloWorld", 
+        "Role": "arn:aws:iam::598307997273:role/service-role/myLambdaRole", 
+        "Timeout": 30, 
+        "LastModified": "2016-12-16T03:02:34.590+0000", 
+        "Runtime": "java8", 
+        "Description": "Java Hello World"
+    }
+}
+```
