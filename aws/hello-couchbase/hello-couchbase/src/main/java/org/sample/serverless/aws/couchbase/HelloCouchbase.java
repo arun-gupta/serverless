@@ -1,6 +1,7 @@
 package org.sample.serverless.aws.couchbase;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.CouchbaseCluster;
@@ -15,13 +16,15 @@ public class HelloCouchbase implements RequestHandler<String, String> {
 
     CouchbaseCluster cluster;
     Bucket bucket;
+    LambdaLogger logger;
 
     @Override
     public String handleRequest(String request, Context context) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String timestamp = dateFormat.format(Calendar.getInstance().getTime());
 
-        context.getLogger().log("Request received: %s" + timestamp);
+        logger = context.getLogger();
+        logger.log("Request received: %s" + timestamp);
         ButtonDocument buttonDocument = new ButtonDocument();
         buttonDocument.setId(context.getAwsRequestId());
         buttonDocument.setRequestId(context.getAwsRequestId());
@@ -36,7 +39,7 @@ public class HelloCouchbase implements RequestHandler<String, String> {
 
     public CouchbaseCluster getCluster() {
         if (null == cluster) {
-            System.out.println("env: " + System.getenv("COUCHBASE_HOST"));
+            logger.log("env: " + System.getenv("COUCHBASE_HOST"));
             cluster = CouchbaseCluster.create(System.getenv("COUCHBASE_HOST"));
         }
         return cluster;
@@ -44,7 +47,7 @@ public class HelloCouchbase implements RequestHandler<String, String> {
 
     public Bucket getBucket() {
         while (null == bucket) {
-            System.out.println("Trying to connect to the database");
+            logger.log("Trying to connect to the database");
 //            String bucketName = System.getenv("BUCKET");
             String bucketName = "serverless";
             bucket = getCluster().openBucket(bucketName, 2L, TimeUnit.MINUTES);
@@ -52,7 +55,7 @@ public class HelloCouchbase implements RequestHandler<String, String> {
             try {
                 Thread.sleep(3000);
             } catch (Exception e) {
-                System.out.println("Thread sleep Exception: " + e.toString());
+                logger.log("Thread sleep Exception: " + e.toString());
                 throw new RuntimeException(e);
             }
         }
