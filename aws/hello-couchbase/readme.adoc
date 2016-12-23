@@ -10,13 +10,13 @@ aws lambda create-function \
 --role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
 --handler org.sample.serverless.aws.couchbase.HelloCouchbase \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/hello-couchbase/hello-couchbase/target/hello-couchbase-1.0-SNAPSHOT.jar \
---description "Hello Couchbase + Lambdas" \
+--description "Hello Serverless Couchbase" \
 --runtime java8  \
---region us-west-1 \
 --timeout 30 \
 --memory-size 1024 \
---environment Variables={COUCHBASE_HOST=1.2.3.4} \
+--environment Variables={COUCHBASE_HOST=ec2-35-165-249-235.us-west-2.compute.amazonaws.com} \
 --publish
+
 ```
 +
 Shows output:
@@ -30,7 +30,7 @@ Shows output:
 ```
 aws lambda invoke \
 --function-name HelloCouchbase \
---region us-west-1 \
+#--region us-west-1 \
 hello-couchbase.out
 ```
 +
@@ -43,3 +43,14 @@ Shows result:
 ```
 +
 Output from the command is in `hello-couchbase.out`.
++
+. Update the function:
++
+```
+aws lambda update-function-code \
+  --function-name HelloCouchbase \
+  --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/hello-couchbase/hello-couchbase/target/hello-couchbase-1.0-SNAPSHOT.jar \
+#  --region us-west-1 \
+  --publish
+```
+
