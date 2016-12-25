@@ -1,8 +1,7 @@
 = Amazon Web Services Lambda Functions
 
-. Write the http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html[code]
-.. http://docs.aws.amazon.com/lambda/latest/dg/java-create-jar-pkg-maven-no-ide.html[sample `pom.xml`]
-. Create http://docs.aws.amazon.com/lambda/latest/dg/lambda-java-how-to-create-deployment-package.html[deployment package]
+. Write the https://github.com/arun-gupta/serverless/tree/master/aws/hellocouchbase/hellocouchbase[code]
+. Create deployment package using `mvn package`
 . Create a function:
 +
 ```
@@ -13,7 +12,7 @@ aws lambda create-function \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/hellocouchbase/hellocouchbase/target/hellocouchbase-1.0-SNAPSHOT.jar \
 --description "Java Hello Couchbase" \
 --runtime java8 \
---region us-west-1 \
+--region us-west-2 \
 --timeout 30 \
 --memory-size 1024 \
 --environment Variables={COUCHBASE_HOST=ec2-35-165-249-235.us-west-2.compute.amazonaws.com} \
@@ -23,16 +22,32 @@ aws lambda create-function \
 Shows output:
 +
 ```
-
+{
+    "CodeSha256": "xmxaHL4Btui3xMeqX9NGHQHQ50ZI+/Y+6HQWtmWWp+8=", 
+    "FunctionName": "HelloCouchbaseLambda", 
+    "CodeSize": 11815, 
+    "MemorySize": 1024, 
+    "FunctionArn": "arn:aws:lambda:us-west-1:598307997273:function:HelloCouchbaseLambda", 
+    "Version": "1", 
+    "Role": "arn:aws:iam::598307997273:role/service-role/myLambdaRole", 
+    "Timeout": 30, 
+    "LastModified": "2016-12-25T00:26:06.182+0000", 
+    "Handler": "org.sample.serverless.aws.couchbase.HelloCouchbase", 
+    "Runtime": "java8", 
+    "Description": "Java Hello Couchbase"
+}
 ```
 +
-. Test the function:
+. Invoke the function:
 +
 ```
-aws lambda invoke --function-name HelloCouchbaseLambda --region us-west-1 --payload '' hellocouchbase.out
+aws lambda invoke \
+--function-name HelloCouchbaseLambda \
+--region us-west-2 \
+hellocouchbase.out
 ```
 +
-Shows result:
+Shows output:
 +
 ```
 {
@@ -40,13 +55,41 @@ Shows result:
 }
 ```
 +
-Output from the command is in `helloworld.out`.
-+
 . Update the function:
 +
 ```
-aws lambda update-function-code --function-name HelloCouchbaseLambda --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/hellocouchbase/hellocouchbase/target/hellocouchbase-1.0-SNAPSHOT.jar --region us-west-1 --publish
+aws lambda update-function-code \
+--function-name HelloCouchbaseLambda \
+--zip-file fileb:///Users/arungupta/workspaces/serverless/aws/hellocouchbase/hellocouchbase/target/hellocouchbase-1.0-SNAPSHOT.jar \
+--region us-west-2 \
+--publish
 ```
++
+Shows result:
++
+```
+{
+    "CodeSha256": "w510ejw/OoVsQt2JiLG2bPZPAaFvQCRrYYYlQWctCQE=", 
+    "FunctionName": "HelloCouchbaseLambda", 
+    "CodeSize": 6978108, 
+    "MemorySize": 1024, 
+    "FunctionArn": "arn:aws:lambda:us-west-2:598307997273:function:HelloCouchbaseLambda:8", 
+    "Environment": {
+        "Variables": {
+            "COUCHBASE_HOST": "ec2-35-165-249-235.us-west-2.compute.amazonaws.com"
+        }
+    }, 
+    "Version": "8", 
+    "Role": "arn:aws:iam::598307997273:role/service-role/myLambdaRole", 
+    "Timeout": 30, 
+    "LastModified": "2016-12-25T04:17:38.717+0000", 
+    "Handler": "org.sample.serverless.aws.couchbase.HelloCouchbaseLambda", 
+    "Runtime": "java8", 
+    "Description": "Java Hello Couchbase"
+}
+```
++
+Output from the command is in `hellocouchbase.out`.
 +
 . Get more details about the function:
 +
@@ -60,21 +103,26 @@ Shows output:
 {
     "Code": {
         "RepositoryType": "S3", 
-        "Location": "https://awslambda-us-west-1-tasks.s3-us-west-1.amazonaws.com/snapshots/598307997273/HelloWorld-b3621a51-aa28-498a-9a69-7541bc9a50f5?X-Amz-Security-Token=FQoDYXdzEEwaDPvHdO71iR5QlQxFpSK3AwIyaqiqO6N47IcWGJios%2FvWg79kcFh%2BVRHCfstcCWFCs2qC5ojZ4r%2F4LEmFL6aLTSNVZEpfJwSpi3a2xpYgqUdd3jJfR7nK8XnTqbF2n87xUANO1xnnRryNlDFpVLwTBOq5haCSqNXoQLgVEA6RNzhmOpNEBN136dnebVtGFZkkweXE7SHtV%2BzVfGzShgxWIDj8oCr2YEREIVdfmlRZ7QnMYKCfUIGDezC0iLIQeXnwMvZp1BC6dq6CDC6KOiZ6kp8SxJikKnoiSFtYcDPQacNl05fqbt7cGFmdtrHbRLyibYxCwB%2FsXQueA7iXiuVARVzOw9HvIEnvN5geT68r%2Fy0DnlRUPtw5ZUu%2FHT66uNGEn8pS8ki6k2fQWbSoIploBGA7l8H%2FmqEmg7dlc68UKnmYLaAv8GDInA9K7ndL%2Fs0%2BD3Gv7WJMEPXiOpTuh1lvRZ%2BGXXwQcuDfZX0i3L6elgFfDPh7CIpwZGvYmn22oiU%2Bgqc%2FjDSvGaOTzLGMjSodfaN%2BuhFvFAcv%2FsAUtIgZ5LksFkC%2FW189CzLFS7HyIE%2BofPUesP75p67Rm2G%2FDBWfkaYq886GRfIo8c%2FgwgU%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20161219T195528Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIAJLAOLVLJ3LXPJOFQ%2F20161219%2Fus-west-1%2Fs3%2Faws4_request&X-Amz-Signature=82d2497a61e9ae749901b8532b77cf9cbbdff8db33538bd74a1d0ee9d4cf61c8"
+        "Location": "https://awslambda-us-west-2-tasks.s3-us-west-2.amazonaws.com/snapshots/598307997273/HelloCouchbaseLambda-5e0824d1-4a15-47e2-92b2-86a23cd91c3f?X-Amz-Security-Token=FQoDYXdzEM%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDAMPDtSzCso5wIuq0CK3A1WiujaG4d8DPfTVk6tPqbw86NSJrS9KSXZ%2FDMdnIXvV9VYGDLyNTD35UtWG5G%2FD8NTxiqO3EfQkVYji8wFOP7rhKQptrHxeiFzwzgayGAN4NanIHgJOUyfFeWOuAywtma1JRqjfyq%2BZqSwAb5aaqNVidLTCFxBxgLJPaQc0IU6C9DSkhyIHl5FISFe8znkFNfksLp3750ybwCnqOk5x54cxdUGJa9OlLGF4JaIbieNXyhDKDhU7d%2Bf25LflXUu7mDvQ%2F5kpEKedKx2w%2FM18kN0SbLmygoU9vHC6H927TPXq%2Fm1lluWYM%2BqgaGTUh98OWf%2Fa1fzv7U09pcBVqYSBjzxolGlEz8nJum5ypC9BrUNCGVGfcZ2%2BA%2BrfskTWP%2Fl9gGBhAZluin70Cnm0j6NphaxJKa%2BVA1nGwHdg84A9xpm%2BVjmon%2F7A%2FaRAWto2LOJxYB4VGEeVWOMbeLIqai84y2RT8dQABdmnpX4ic%2FoHDtRJpos7veNmKQpQCZBWlsRqbi0JwD7dJe8B0BkIE76Y8LCQ3POh4VFCSy7GRa2v7xCoX%2BkN1mIBB86pEvNoYF72Fo9zCbeXm3so5Lv9wgU%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20161225T060843Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIAJAJK5NVWP7WPBLMA%2F20161225%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=9c9c2aadd0f98f5af48354e89433fb42cab8357b81950b4d9ab1726491d8bcc4"
     }, 
     "Configuration": {
         "Version": "$LATEST", 
-        "CodeSha256": "7kxVI356SYg7vg9BdLRSEJ2U7MaMbhwOZG9P7iNlMsM=", 
-        "FunctionName": "HelloWorld", 
+        "CodeSha256": "i07oA4fc0NTKDhXnzgvHSRo44X2JY62x2BFJ7Oy/lHo=", 
+        "FunctionName": "HelloCouchbaseLambda", 
         "MemorySize": 1024, 
-        "CodeSize": 11782, 
-        "FunctionArn": "arn:aws:lambda:us-west-1:598307997273:function:HelloWorld", 
-        "Handler": "org.sample.serverless.aws.helloworld.HelloWorld", 
+        "CodeSize": 6977373, 
+        "FunctionArn": "arn:aws:lambda:us-west-2:598307997273:function:HelloCouchbaseLambda", 
+        "Environment": {
+            "Variables": {
+                "COUCHBASE_HOST": "ec2-35-165-249-235.us-west-2.compute.amazonaws.com"
+            }
+        }, 
+        "Handler": "org.sample.serverless.aws.couchbase.HelloCouchbaseLambda", 
         "Role": "arn:aws:iam::598307997273:role/service-role/myLambdaRole", 
         "Timeout": 30, 
-        "LastModified": "2016-12-16T03:02:34.590+0000", 
+        "LastModified": "2016-12-25T06:06:16.323+0000", 
         "Runtime": "java8", 
-        "Description": "Java Hello World"
+        "Description": "Java Hello Couchbase"
     }
 }
 ```
