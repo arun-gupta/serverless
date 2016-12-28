@@ -68,6 +68,21 @@ aws lambda update-function-code \
 --publish
 ```
 
+== Create API Gateway resources
+
+. Create API: `aws apigateway create-rest-api --name 'Book GET'` to see the output:
++
+```
+{
+    "name": "Book GET", 
+    "id": "w0oz6nfkbj", 
+    "createdDate": 1482899310
+}
+```
++
+. Find the parent id using `aws apigateway get-resources --rest-api-id w0oz6nfkbj`
+. Create resource: `aws apigateway create-resource --rest-api-id w0oz6nfkbj --parent-id i71j1nq177 --path-part books`
+
 == TODO
 
 . Generate Swagger endpoint for API
