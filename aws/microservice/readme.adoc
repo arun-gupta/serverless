@@ -2,12 +2,57 @@
 
 This document explains how to use AWS API Gateway and AWS Lambda to create a simple microservice. The Lambda function uses Java and the data is stored in Couchbase running in EC2.
 
-. Create a deployment package: `mvn package`
+== Get ready for API Gateway
+
+. Create a new IAM group: `aws iam create-group --group-name microservice` to see the output:
++
+```
+{
+    "Group": {
+        "Path": "/", 
+        "CreateDate": "2016-12-28T02:10:24.049Z", 
+        "GroupId": "AGPAJM75OKFFUWLR4H7VI", 
+        "Arn": "arn:aws:iam::598307997273:group/microservice", 
+        "GroupName": "microservice"
+    }
+}
+```
++
+. Attach policy to the group:
++
+```
+aws iam attach-group-policy --group-name microservice --policy-arn arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
+aws iam attach-group-policy --group-name microservice --policy-arn arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess
+aws iam attach-group-policy --group-name microservice --policy-arn arn:aws:iam::aws:policy/AWSLambdaFullAccess
+aws iam attach-group-policy --group-name microservice --policy-arn arn:aws:iam::aws:policy/IAMFullAccess
+```
++
+. Create a user in this group `aws iam create-user --user-name microuser` to see output:
++
+```
+{
+    "User": {
+        "UserName": "microuser", 
+        "Path": "/", 
+        "CreateDate": "2016-12-28T02:18:55.527Z", 
+        "UserId": "AIDAJR46UNONQKL2J6Z64", 
+        "Arn": "arn:aws:iam::598307997273:user/microuser"
+    }
+}
+```
++
+WARNING: Complete set of policies for each user need to be identified otherwise the following error is thrown `An error occurred (InvalidParameterValueException) when calling the CreateFunction operation: The role defined for the function cannot be assumed by Lambda.`
++
+. Add user to group: `aws iam add-user-to-group --group-name microservice --user-name microuser`
+
+== Lambda Functions
+
+. Create a deployment package: `mvn -f microservice-http-endpoint/pom.xml package`
 . Create Lambda functions, one for each endpoint:
 +
 ```
 aws lambda create-function \
---function-name MicroserviceHttpEndpointGetAll \
+--function-name MicroserviceGetAll \
 --role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
 --handler org.sample.serverless.aws.couchbase.BucketGetAll \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
@@ -22,7 +67,7 @@ aws lambda create-function \
 +
 ```
 aws lambda create-function \
---function-name MicroserviceHttpEndpointGetOne \
+--function-name MicroserviceGetOne \
 --role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
 --handler org.sample.serverless.aws.couchbase.BucketGetOne \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
@@ -37,7 +82,7 @@ aws lambda create-function \
 +
 ```
 aws lambda create-function \
---function-name MicroserviceHttpEndpointPost \
+--function-name MicroservicePost \
 --role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
 --handler org.sample.serverless.aws.couchbase.BucketPost \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
