@@ -90,9 +90,9 @@ to see the output:
 }
 ```
 +
-Note the value of `id` attribute. This is the `api-id`.
+Value of `id` attribute is `api-id`.
 +
-*Find the parent id*: `aws apigateway get-resources --rest-api-id xi5cgluxt7`. It shows the output:
+*Find the root id*: `aws apigateway get-resources --rest-api-id xi5cgluxt7`. It shows the output:
 +
 ```
 {
@@ -105,7 +105,7 @@ Note the value of `id` attribute. This is the `api-id`.
 }
 ```
 +
-Note the value of `id` attribute. This is the `parent-id`.
+Value of `id` attribute is `root-id`. This is also the `parent-id` for top level resources.
 +
 . *Create resource*
 +
@@ -127,7 +127,7 @@ to see the output:
 }
 ```
 +
-Value of `id` attribute is resource id.
+Value of `id` attribute is `resource-id`.
 +
 . *Create a `GET` method*
 +
@@ -178,11 +178,23 @@ to see the output:
 .. Set `content-type` of GET method response
 +
 ```
+aws apigateway put-method-response \
+--rest-api-id xi5cgluxt7 \
+--resource-id 35um94 \
+--http-method GET \
+--status-code 200 \
+--response-models "{\"application/json\": \"Empty\"}"
 ```
 +
 .. Set `content-type` of GET method integration response
 +
 ```
+aws apigateway put-integration-response \
+--rest-api-id xi5cgluxt7 \
+--resource-id 35um94 \
+--http-method GET \
+--status-code 200 \
+--response-templates "{\"application/json\": \"Empty\"}"
 ```
 +
 . *Deploy the API*
