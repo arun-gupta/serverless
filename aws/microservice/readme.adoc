@@ -70,18 +70,79 @@ aws lambda update-function-code \
 
 == Create API Gateway resources
 
-. Create API: `aws apigateway create-rest-api --name 'Book GET'` to see the output:
+. *Create API*: `aws apigateway create-rest-api --name 'BookGET'` to see the output:
 +
 ```
 {
-    "name": "Book GET", 
-    "id": "w0oz6nfkbj", 
-    "createdDate": 1482899310
+    "name": "BookGET", 
+    "id": "xi5cgluxt7", 
+    "createdDate": 1482949244
 }
 ```
 +
-. Find the parent id using `aws apigateway get-resources --rest-api-id w0oz6nfkbj`
-. Create resource: `aws apigateway create-resource --rest-api-id w0oz6nfkbj --parent-id i71j1nq177 --path-part books`
+Note the value of `id` attribute. This is the `api-id`.
++
+. *Find the parent id*: `aws apigateway get-resources --rest-api-id xi5cgluxt7`. It shows the output:
++
+```
+{
+    "items": [
+        {
+            "path": "/", 
+            "id": "nobk6jl0x4"
+        }
+    ]
+}
+```
++
+Note the value of `id` attribute. This is the `parent-id`.
++
+. *Create resource*: `aws apigateway create-resource --rest-api-id xi5cgluxt7 --parent-id nobk6jl0x4 --path-part books` to see the output:
++
+```
+{
+    "path": "/books", 
+    "pathPart": "books", 
+    "id": "35um94", 
+    "parentId": "nobk6jl0x4"
+}
+```
++
+. *Create a `GET` method*: `aws apigateway put-method --rest-api-id xi5cgluxt7 --resource-id 35um94 --http-method GET --authorization-type NONE` to see the response:
++
+```
+{
+    "apiKeyRequired": false, 
+    "httpMethod": "GET", 
+    "authorizationType": "NONE"
+}
+```
++
+. *Configure Lambda function*
++
+```
+aws apigateway put-integration \
+--rest-api-id xi5cgluxt7 \
+--resource-id 35um94 \
+--http-method GET \
+--type AWS \
+--integration-http-method GET \
+--uri arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations
+```
++
+to see the output:
++
+```
+{
+    "httpMethod": "GET", 
+    "passthroughBehavior": "WHEN_NO_MATCH", 
+    "cacheKeyParameters": [], 
+    "type": "AWS", 
+    "uri": "arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations", 
+    "cacheNamespace": "35um94"
+}
+```
+
 
 == TODO
 
