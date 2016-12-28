@@ -70,9 +70,17 @@ aws lambda update-function-code \
 --publish
 ```
 
-== Create API Gateway resources
+== API Gateway Resources
 
-. *Create API*: `aws apigateway create-rest-api --name 'BookGET'` to see the output:
+. *Create API*
++
+```
+aws apigateway \
+create-rest-api \
+--name 'BookGET'
+```
++
+to see the output:
 +
 ```
 {
@@ -84,7 +92,7 @@ aws lambda update-function-code \
 +
 Note the value of `id` attribute. This is the `api-id`.
 +
-. *Find the parent id*: `aws apigateway get-resources --rest-api-id xi5cgluxt7`. It shows the output:
+*Find the parent id*: `aws apigateway get-resources --rest-api-id xi5cgluxt7`. It shows the output:
 +
 ```
 {
@@ -99,7 +107,16 @@ Note the value of `id` attribute. This is the `api-id`.
 +
 Note the value of `id` attribute. This is the `parent-id`.
 +
-. *Create resource*: `aws apigateway create-resource --rest-api-id xi5cgluxt7 --parent-id nobk6jl0x4 --path-part books` to see the output:
+. *Create resource*
++
+```
+aws apigateway create-resource \
+--rest-api-id xi5cgluxt7 \
+--parent-id nobk6jl0x4 \
+--path-part books
+```
++
+to see the output:
 +
 ```
 {
@@ -110,7 +127,19 @@ Note the value of `id` attribute. This is the `parent-id`.
 }
 ```
 +
-. *Create a `GET` method*: `aws apigateway put-method --rest-api-id xi5cgluxt7 --resource-id 35um94 --http-method GET --authorization-type NONE` to see the response:
+Value of `id` attribute is resource id.
++
+. *Create a `GET` method*
++
+```
+aws apigateway put-method \
+--rest-api-id xi5cgluxt7 \
+--resource-id 35um94 \
+--http-method GET \
+--authorization-type NONE
+```
++
+to see the response:
 +
 ```
 {
@@ -121,6 +150,7 @@ Note the value of `id` attribute. This is the `parent-id`.
 ```
 +
 . *Configure Lambda function*
+.. Set Lambda function as destination of GET
 +
 ```
 aws apigateway put-integration \
@@ -143,6 +173,72 @@ to see the output:
     "uri": "arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations", 
     "cacheNamespace": "35um94"
 }
+```
++
+.. Set `content-type` of GET method response
++
+```
+```
++
+.. Set `content-type` of GET method integration response
++
+```
+```
++
+. *Deploy the API*
++
+```
+aws apigateway create-deployment \
+--rest-api-id xi5cgluxt7 \
+--stage-name test
+```
++
+to see the output:
++
+```
+{
+    "id": "b2yxli", 
+    "createdDate": 1482951745
+}
+```
++
+. *Grant permission* to allow API Gateway to invoke Lambda Function
++
+```
+aws lambda add-permission \
+--function-name MicroserviceGetAll \
+--statement-id apigateway-test-getall-1 \
+--action lambda:InvokeFunction \
+--principal apigateway.amazonaws.com \
+--source-arn "arn:aws:execute-api:us-west-1:598307997273:xi5cgluxt7/*/GET/books"
+```
++
+to see the response
++
+```
+{
+    "Statement": "{\"Sid\":\"apigateway-test-getall\",\"Resource\":\"arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":[\"lambda:InvokeFunction\"],\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-west-1:598307997273:xi5cgluxt7/*/GET/*\"}}}"
+}
+```
++
+Grant permission to the deployed API:
++
+```
+aws lambda add-permission \
+--function-name MicroserviceGetAll \
+--statement-id apigateway-test-getall-2 \
+--action lambda:InvokeFunction \
+--principal apigateway.amazonaws.com \
+--source-arn "arn:aws:execute-api:us-west-1:598307997273:xi5cgluxt7/test/GET/books"
+```
++
+. *Test method*
++
+```
+aws apigateway test-invoke-method \
+--rest-api-id xi5cgluxt7 \
+--resource-id 35um94 \
+--http-method GET
 ```
 
 
