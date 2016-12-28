@@ -2,7 +2,9 @@
 
 This document explains how to use AWS API Gateway and AWS Lambda to create a simple microservice. The Lambda function uses Java and the data is stored in Couchbase running in EC2.
 
-== Get ready for API Gateway
+== IAM Roles
+
+IAM roles will have policies and trust relationships that will allow this role to be used in API Gateway and execute Lambda function.
 
 . Create a new IAM role: `aws iam create-role --role-name microRole --assume-role-policy-document file://./trust.json`
 . Attach policy to the role: `aws iam put-role-policy --role-name microRole --policy-name microPolicy --policy-document file://./policy.json`
