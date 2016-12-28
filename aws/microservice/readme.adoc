@@ -1,0 +1,67 @@
+= Couchbase Microservice HTTP Endpoint
+
+This document explains how to use AWS API Gateway and AWS Lambda to create a simple microservice. The Lambda function uses Java and the data is stored in Couchbase running in EC2.
+
+. Create a deployment package: `mvn package`
+. Create Lambda functions, one for each endpoint:
++
+```
+aws lambda create-function \
+--function-name MicroserviceHttpEndpointGetAll \
+--role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
+--handler org.sample.serverless.aws.couchbase.BucketGetAll \
+--zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
+--description "Microservice HTTP Endpoint - Get All" \
+--runtime java8 \
+--region us-west-1 \
+--timeout 30 \
+--memory-size 1024 \
+--environment Variables={COUCHBASE_HOST=ec2-35-165-83-82.us-west-2.compute.amazonaws.com} \
+--publish
+```
++
+```
+aws lambda create-function \
+--function-name MicroserviceHttpEndpointGetOne \
+--role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
+--handler org.sample.serverless.aws.couchbase.BucketGetOne \
+--zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
+--description "Microservice HTTP Endpoint - Get One" \
+--runtime java8 \
+--region us-west-1 \
+--timeout 30 \
+--memory-size 1024 \
+--environment Variables={COUCHBASE_HOST=ec2-35-165-83-82.us-west-2.compute.amazonaws.com} \
+--publish
+```
++
+```
+aws lambda create-function \
+--function-name MicroserviceHttpEndpointPost \
+--role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
+--handler org.sample.serverless.aws.couchbase.BucketPost \
+--zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
+--description "Microservice HTTP Endpoint - Post" \
+--runtime java8 \
+--region us-west-1 \
+--timeout 30 \
+--memory-size 1024 \
+--environment Variables={COUCHBASE_HOST=ec2-35-165-83-82.us-west-2.compute.amazonaws.com} \
+--publish
+```
++
+. Update the function:
++
+```
+mvn clean package;
+aws lambda update-function-code \
+--function-name <function-name> \
+--zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
+--region us-west-2 \
+--publish
+```
+
+== TODO
+
+. Generate Swagger endpoint for API
+
