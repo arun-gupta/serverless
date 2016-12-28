@@ -4,8 +4,8 @@ This document explains how to use AWS API Gateway and AWS Lambda to create a sim
 
 == Get ready for API Gateway
 
-. Create a new IAM role: `aws iam create-role --role-name microrole --assume-role-policy-document file://./trust.json`
-. Attach policy to the role: `aws iam put-role-policy --policy-document file://./policy.json --role-name microrole --policy-name micropolicy`
+. Create a new IAM role: `aws iam create-role --role-name microRole --assume-role-policy-document file://./trust.json`
+. Attach policy to the role: `aws iam put-role-policy --role-name microRole --policy-name microPolicy --policy-document file://./policy.json`
 
 == Lambda Functions
 
@@ -15,7 +15,7 @@ This document explains how to use AWS API Gateway and AWS Lambda to create a sim
 ```
 aws lambda create-function \
 --function-name MicroserviceGetAll \
---role arn:aws:iam::598307997273:role/service-role/microrole \
+--role arn:aws:iam::598307997273:role/microRole \
 --handler org.sample.serverless.aws.couchbase.BucketGetAll \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
 --description "Microservice HTTP Endpoint - Get All" \
@@ -30,7 +30,7 @@ aws lambda create-function \
 ```
 aws lambda create-function \
 --function-name MicroserviceGetOne \
---role arn:aws:iam::598307997273:role/service-role/microrole \
+--role arn:aws:iam::598307997273:role/microRole \
 --handler org.sample.serverless.aws.couchbase.BucketGetOne \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
 --description "Microservice HTTP Endpoint - Get One" \
@@ -45,7 +45,7 @@ aws lambda create-function \
 ```
 aws lambda create-function \
 --function-name MicroservicePost \
---role arn:aws:iam::598307997273:role/service-role/microrole \
+--role arn:aws:iam::598307997273:role/microRole \
 --handler org.sample.serverless.aws.couchbase.BucketPost \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
 --description "Microservice HTTP Endpoint - Post" \
@@ -57,7 +57,7 @@ aws lambda create-function \
 --publish
 ```
 +
-. Update the function:
+. (OPTIONAL) Update the function:
 +
 ```
 mvn clean package;
