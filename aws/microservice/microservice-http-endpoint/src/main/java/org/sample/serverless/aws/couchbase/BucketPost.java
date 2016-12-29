@@ -18,7 +18,7 @@ public class BucketPost implements RequestHandler<Book, String> {
         
         JsonDocument document;
         try {
-            document = CouchbaseUtil.getBucket(logger).insert(Book.toJson(request));
+            document = CouchbaseUtil.getBucket(logger).upsert(Book.toJson(request));
             return document.content().toString();
         } catch (JsonProcessingException ex) {
             throw new RuntimeException(ex);
