@@ -6,8 +6,8 @@ This document explains how to use AWS API Gateway and AWS Lambda to create a sim
 
 IAM roles will have policies and trust relationships that will allow this role to be used in API Gateway and execute Lambda function.
 
-. Create a new IAM role: `aws iam create-role --role-name microRole --assume-role-policy-document file://./trust.json`
-. Attach policy to the role: `aws iam put-role-policy --role-name microRole --policy-name microPolicy --policy-document file://./policy.json`
+. Create a new IAM role: `aws iam create-role --role-name microserviceRole --assume-role-policy-document file://./trust.json`
+. Attach policy to the role: `aws iam put-role-policy --role-name microserviceRole --policy-name microPolicy --policy-document file://./policy.json`
 
 == Lambda Functions
 
@@ -17,7 +17,7 @@ IAM roles will have policies and trust relationships that will allow this role t
 ```
 aws lambda create-function \
 --function-name MicroserviceGetAll \
---role arn:aws:iam::598307997273:role/microRole \
+--role arn:aws:iam::598307997273:role/microserviceRole \
 --handler org.sample.serverless.aws.couchbase.BucketGetAll \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
 --description "Microservice HTTP Endpoint - Get All" \
@@ -32,7 +32,7 @@ aws lambda create-function \
 ```
 aws lambda create-function \
 --function-name MicroserviceGetOne \
---role arn:aws:iam::598307997273:role/microRole \
+--role arn:aws:iam::598307997273:role/microserviceRole \
 --handler org.sample.serverless.aws.couchbase.BucketGetOne \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
 --description "Microservice HTTP Endpoint - Get One" \
@@ -47,7 +47,7 @@ aws lambda create-function \
 ```
 aws lambda create-function \
 --function-name MicroservicePost \
---role arn:aws:iam::598307997273:role/microRole \
+--role arn:aws:iam::598307997273:role/microserviceRole \
 --handler org.sample.serverless.aws.couchbase.BucketPost \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
 --description "Microservice HTTP Endpoint - Post" \
@@ -77,29 +77,29 @@ aws lambda update-function-code \
 ```
 aws apigateway \
 create-rest-api \
---name 'BookGET'
+--name BookPOST
 ```
 +
 to see the output:
 +
 ```
 {
-    "name": "BookGET", 
-    "id": "xi5cgluxt7", 
-    "createdDate": 1482949244
+    "name": "BookPOST", 
+    "id": "sofl9ilki7", 
+    "createdDate": 1482969440
 }
 ```
 +
 Value of `id` attribute is `api-id`.
 +
-*Find the root id*: `aws apigateway get-resources --rest-api-id xi5cgluxt7`. It shows the output:
+*Find the root id*: `aws apigateway get-resources --rest-api-id sofl9ilki7`. It shows the output:
 +
 ```
 {
     "items": [
         {
             "path": "/", 
-            "id": "nobk6jl0x4"
+            "id": "zkgsk0g1g9"
         }
     ]
 }
@@ -111,8 +111,8 @@ Value of `id` attribute is `root-id`. This is also the `parent-id` for top level
 +
 ```
 aws apigateway create-resource \
---rest-api-id xi5cgluxt7 \
---parent-id nobk6jl0x4 \
+--rest-api-id sofl9ilki7 \
+--parent-id zkgsk0g1g9 \
 --path-part books
 ```
 +
@@ -122,20 +122,20 @@ to see the output:
 {
     "path": "/books", 
     "pathPart": "books", 
-    "id": "35um94", 
-    "parentId": "nobk6jl0x4"
+    "id": "igjr08", 
+    "parentId": "zkgsk0g1g9"
 }
 ```
 +
 Value of `id` attribute is `resource-id`.
 +
-. *Create a `GET` method*
+. *Create a `POST` method*
 +
 ```
 aws apigateway put-method \
---rest-api-id xi5cgluxt7 \
---resource-id 35um94 \
---http-method GET \
+--rest-api-id sofl9ilki7 \
+--resource-id igjr08 \
+--http-method POST \
 --authorization-type NONE
 ```
 +
@@ -144,64 +144,86 @@ to see the response:
 ```
 {
     "apiKeyRequired": false, 
-    "httpMethod": "GET", 
+    "httpMethod": "POST", 
     "authorizationType": "NONE"
 }
 ```
 +
 . *Configure Lambda function*
-.. Set Lambda function as destination of GET
+.. Set Lambda function as destination of POST
 +
 ```
 aws apigateway put-integration \
---rest-api-id xi5cgluxt7 \
---resource-id 35um94 \
---http-method GET \
+--rest-api-id sofl9ilki7 \
+--resource-id igjr08 \
+--http-method POST \
 --type AWS \
---integration-http-method GET \
---uri arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations
+--integration-http-method POST \
+--uri arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost/invocations
 ```
 +
 to see the output:
 +
 ```
 {
-    "httpMethod": "GET", 
+    "httpMethod": "POST", 
     "passthroughBehavior": "WHEN_NO_MATCH", 
     "cacheKeyParameters": [], 
     "type": "AWS", 
-    "uri": "arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations", 
-    "cacheNamespace": "35um94"
+    "uri": "arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost/invocations", 
+    "cacheNamespace": "igjr08"
 }
 ```
 +
-.. Set `content-type` of GET method response
+.. Set `content-type` of POST method response
 +
 ```
 aws apigateway put-method-response \
---rest-api-id xi5cgluxt7 \
---resource-id 35um94 \
---http-method GET \
+--rest-api-id sofl9ilki7 \
+--resource-id igjr08 \
+--http-method POST \
 --status-code 200 \
 --response-models "{\"application/json\": \"Empty\"}"
 ```
 +
-.. Set `content-type` of GET method integration response
+to see the response:
++
+```
+{
+    "responseModels": {
+        "application/json": "Empty"
+    }, 
+    "statusCode": "200"
+}
+```
++
+.. Set `content-type` of POST method integration response
 +
 ```
 aws apigateway put-integration-response \
---rest-api-id xi5cgluxt7 \
---resource-id 35um94 \
---http-method GET \
+--rest-api-id sofl9ilki7 \
+--resource-id igjr08 \
+--http-method POST \
 --status-code 200 \
 --response-templates "{\"application/json\": \"Empty\"}"
+```
++
+to see the response:
++
+```
+{
+    "statusCode": "200", 
+    "responseTemplates": {
+        "application/json": "Empty"
+    }
+}
 ```
 +
 . *Deploy the API*
 +
 ```
 aws apigateway create-deployment \
---rest-api-id xi5cgluxt7 \
+--rest-api-id sofl9ilki7 \
 --stage-name test
 ```
 +
@@ -209,8 +231,8 @@ to see the output:
 +
 ```
 {
-    "id": "b2yxli", 
-    "createdDate": 1482951745
+    "id": "0udgrb", 
+    "createdDate": 1482969690
 }
 ```
 +
@@ -218,18 +240,18 @@ to see the output:
 +
 ```
 aws lambda add-permission \
---function-name MicroserviceGetAll \
---statement-id apigateway-test-getall-1 \
+--function-name MicroservicePost \
+--statement-id apigateway-test-post-1 \
 --action lambda:InvokeFunction \
 --principal apigateway.amazonaws.com \
---source-arn "arn:aws:execute-api:us-west-1:598307997273:xi5cgluxt7/*/GET/books"
+--source-arn "arn:aws:execute-api:us-west-1:598307997273:sofl9ilki7/*/POST/books"
 ```
 +
 to see the response
 +
 ```
 {
-    "Statement": "{\"Sid\":\"apigateway-test-getall\",\"Resource\":\"arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":[\"lambda:InvokeFunction\"],\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-west-1:598307997273:xi5cgluxt7/*/GET/*\"}}}"
+    "Statement": "{\"Sid\":\"apigateway-test-post-1\",\"Resource\":\"arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":[\"lambda:InvokeFunction\"],\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-west-1:598307997273:sofl9ilki7/*/POST/books\"}}}"
 }
 ```
 +
@@ -237,19 +259,27 @@ Grant permission to the deployed API:
 +
 ```
 aws lambda add-permission \
---function-name MicroserviceGetAll \
---statement-id apigateway-test-getall-2 \
+--function-name MicroservicePost \
+--statement-id apigateway-test-post-2 \
 --action lambda:InvokeFunction \
 --principal apigateway.amazonaws.com \
---source-arn "arn:aws:execute-api:us-west-1:598307997273:xi5cgluxt7/test/GET/books"
+--source-arn "arn:aws:execute-api:us-west-1:598307997273:sofl9ilki7/test/GET/books"
+```
++
+to see the output
++
+```
+{
+    "Statement": "{\"Sid\":\"apigateway-test-post-2\",\"Resource\":\"arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":[\"lambda:InvokeFunction\"],\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-west-1:598307997273:sofl9ilki7/test/GET/books\"}}}"
+}
 ```
 +
 . *Test method*
 +
 ```
 aws apigateway test-invoke-method \
---rest-api-id xi5cgluxt7 \
---resource-id 35um94 \
+--rest-api-id psffwz9zrf \
+--resource-id ql5it0 \
 --http-method GET
 ```
 

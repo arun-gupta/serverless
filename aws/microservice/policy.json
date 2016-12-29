@@ -4,9 +4,7 @@
     {
       "Effect": "Allow",
       "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
+        "logs:*"
       ],
       "Resource": "arn:aws:logs:*:*:*"
     },
@@ -23,6 +21,13 @@
         "execute-api:Invoke"
       ],
       "Resource": "arn:aws:execute-api:*:*:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+          "lambda:*"
+      ],
+      "Resource": "*"
     }
   ]
 }
