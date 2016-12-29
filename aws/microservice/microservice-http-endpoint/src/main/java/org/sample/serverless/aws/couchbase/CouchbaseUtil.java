@@ -38,6 +38,6 @@ public class CouchbaseUtil {
     }
     
     public static String getBucketName() {
-        return "books";
+        return "default";
     }
 }
