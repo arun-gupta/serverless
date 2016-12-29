@@ -1,6 +1,8 @@
 = Couchbase Microservice HTTP Endpoint
 
-This document explains how to use AWS API Gateway and AWS Lambda to create a simple microservice. The Lambda function uses Java and the data is stored in Couchbase running in EC2.
+This document explains how to use AWS API Gateway and AWS Lambda to create a simple microservice. The Lambda function uses Java runtime and the data is stored in Couchbase 4.5.0 running in EC2.
+
+Detailed steps are at http://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example-configure-event-source.html.
 
 == IAM Roles
 
@@ -8,6 +10,8 @@ IAM roles will have policies and trust relationships that will allow this role t
 
 . Create a new IAM role: `aws iam create-role --role-name microserviceRole --assume-role-policy-document file://./trust.json`
 . Attach policy to the role: `aws iam put-role-policy --role-name microserviceRole --policy-name microPolicy --policy-document file://./policy.json`
+
+More details: http://docs.aws.amazon.com/apigateway/latest/developerguide/setting-up.html
 
 == Lambda Functions
 
@@ -380,4 +384,4 @@ Following up at https://forums.aws.amazon.com/thread.jspa?threadID=245998 and ht
 == TODO
 
 . Generate Swagger endpoint for API
-
+. Create http://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html[Serverless Application Model] for the application
