@@ -14,7 +14,7 @@ public class CouchbaseUtil {
     
     public static CouchbaseCluster getCluster(LambdaLogger logger) {
         if (null == cluster) {
-            logger.log("env: " + System.getenv("COUCHBASE_HOST"));
+            System.out.println("env: " + System.getenv("COUCHBASE_HOST"));
             cluster = CouchbaseCluster.create(System.getenv("COUCHBASE_HOST"));
         }
         return cluster;
@@ -22,13 +22,14 @@ public class CouchbaseUtil {
     
     public static Bucket getBucket(LambdaLogger logger) {
         while (null == bucket) {
-            logger.log("Trying to connect to the database");
+            System.out.println("Trying to connect to the database");
+//            logger.log("");
             bucket = getCluster(logger).openBucket(getBucketName(), 2L, TimeUnit.MINUTES);
 
             try {
                 Thread.sleep(3000);
             } catch (Exception e) {
-                logger.log("Thread sleep Exception: " + e.toString());
+                System.out.println("Thread sleep Exception: " + e.toString());
                 throw new RuntimeException(e);
             }
         }
