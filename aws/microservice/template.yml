@@ -15,4 +15,17 @@ Resources:
           S3_BUCKET: serverless-microservice
           COUCHBASE_HOST: ec2-52-53-193-176.us-west-1.compute.amazonaws.com
       Role: arn:aws:iam::598307997273:role/microserviceRole
+  MicroservicePost:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.sample.serverless.aws.couchbase.BucketPost
+      Runtime: java8
+      CodeUri: s3://serverless-microservice/microservice-http-endpoint-1.0-SNAPSHOT.jar
+      Timeout: 30
+      MemorySize: 1024
+      Environment:
+        Variables:
+          S3_BUCKET: serverless-microservice
+          COUCHBASE_HOST: ec2-52-53-193-176.us-west-1.compute.amazonaws.com
+      Role: arn:aws:iam::598307997273:role/microserviceRole
 
