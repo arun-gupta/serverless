@@ -22,8 +22,8 @@ More details: http://docs.aws.amazon.com/apigateway/latest/developerguide/settin
 SAM samples: https://github.com/awslabs/serverless-application-model
 SAM specification: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md
 
-. Create bucket: `aws s3 mb s3://serverless-microservice`
-. Copy JAR file to S3 bucket: `aws s3 cp microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar s3://serverless-microservice/microservice-http-endpoint-1.0-SNAPSHOT.jar`
+. Create bucket: `aws s3 mb s3://microservice-serverless`
+. Copy JAR file to S3 bucket: `aws s3 cp microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar s3://microservice-serverless/microservice-http-endpoint-1.0-SNAPSHOT.jar`
 . Deploy SAM
 +
 ```
