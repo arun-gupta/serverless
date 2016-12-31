@@ -311,7 +311,7 @@ aws apigateway put-integration \
 --resource-id vrpkod \
 --http-method GET \
 --type AWS \
---integration-http-method GET \
+--integration-http-method POST \
 --uri arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations
 ```
 +
