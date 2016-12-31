@@ -19,6 +19,7 @@ More details: http://docs.aws.amazon.com/apigateway/latest/developerguide/settin
 
 === Using Serverless Application Model (SAM)
 
+SAM samples: https://github.com/awslabs/serverless-application-model
 SAM specification: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md
 
 . Create bucket: `aws s3 mb s3://serverless-microservice`
