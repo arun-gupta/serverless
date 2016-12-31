@@ -29,7 +29,8 @@ SAM specification: https://github.com/awslabs/serverless-application-model/blob/
 ```
 aws cloudformation deploy \
 --template-file template.yml \
---stack-name microservice
+--stack-name microservice \
+--region us-west-2
 ```
 
 === Using AWS CLI
