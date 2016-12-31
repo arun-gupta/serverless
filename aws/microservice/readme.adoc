@@ -8,8 +8,20 @@ Detailed steps are at http://docs.aws.amazon.com/lambda/latest/dg/with-on-demand
 
 IAM roles will have policies and trust relationships that will allow this role to be used in API Gateway and execute Lambda function.
 
-. Create a new IAM role: `aws iam create-role --role-name microserviceRole --assume-role-policy-document file://./trust.json`
-. Attach policy to the role: `aws iam put-role-policy --role-name microserviceRole --policy-name microPolicy --policy-document file://./policy.json`
+. Create a new IAM role
++
+```aws iam create-role \
+--role-name microserviceRole \
+--assume-role-policy-document file://./trust.json
+```
+. Attach policy to the role
++
+```
+aws iam put-role-policy \
+--role-name microserviceRole \
+--policy-name microPolicy \
+--policy-document file://./policy.json
+```
 
 More details: http://docs.aws.amazon.com/apigateway/latest/developerguide/setting-up.html
 
@@ -393,16 +405,15 @@ to see the response
 {
     "status": 200, 
     "body": "Empty", 
-    "log": "Execution log for request test-request\nSat Dec 31 03:58:57 UTC 2016 : Starting execution for request: test-invoke-request\nSat Dec 31 03:58:57 UTC 2016 : HTTP Method: GET, Resource Path: /books\nSat Dec 31 03:58:57 UTC 2016 : Method request path: {}\nSat Dec 31 03:58:57 UTC 2016 : Method request query string: {}\nSat Dec 31 03:58:57 UTC 2016 : Method request headers: {}\nSat Dec 31 03:58:57 UTC 2016 : Method request body before transformations: \nSat Dec 31 03:58:58 UTC 2016 : Endpoint request URI: https://lambda.us-west-1.amazonaws.com/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations\nSat Dec 31 03:58:58 UTC 2016 : Endpoint request headers: {x-amzn-lambda-integration-tag=test-request, Authorization=******************************************************************************************************************************************************************************************************************************************************************************************************72cdb9, X-Amz-Date=20161231T035858Z, x-amzn-apigateway-api-id=lb2qgujjif, X-Amz-Source-Arn=arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/null/GET/books, Accept=application/json, User-Agent=AmazonAPIGateway_lb2qgujjif, X-Amz-Security-Token=FQoDYXdzEGwaDOk+joeyPavoObIO8SK3AyrdJhqgLN5mTLEPez9zdV6pqFELEf4iY0j5vZaOBq9iDJyh5ku7iOWgvNBRw0GwKuXB7itBojd+IbTh0naloFD6YWKUUqyRxi+X2wG7fDFgimFRwaLm7RI586wpG+BlnarR8lqxJcGbV+DrAye1IR0CLbyqItYMhi3ItJtthcDzdjRJoma3BkZALN5QgAsiCsXCzN5x8mkczqlaHb5fNl6Jr2p4AhppIlhUYdGDL5TYVcyyvO1YlULYVOYLh0gUhWakguQH7vR2k0VySUxIRPHd/Mi7+HMMJfFcgXpzk5dFLtsefO6kCHapdQpoRhDpBM4PTNVEpF9P3p4WqY6mhWnJhkd9ivSKR0BkJsy3y9n5Jh [TRUNCATED]\nSat Dec 31 03:58:58 UTC 2016 : Endpoint request body after transformations: \nSat Dec 31 03:59:04 UTC 2016 : Endpoint response body before transformations: \"[]\"\nSat Dec 31 03:59:04 UTC 2016 : Endpoint response headers: {x-amzn-Remapped-Content-Length=0, x-amzn-RequestId=74ae1978-cf0d-11e6-8b17-55cebdd03f49, Connection=keep-alive, Content-Length=4, Date=Sat, 31 Dec 2016 03:59:03 GMT, Content-Type=application/json}\nSat Dec 31 03:59:04 UTC 2016 : Method response body after transformations: Empty\nSat Dec 31 03:59:04 UTC 2016 : Method response headers: {X-Amzn-Trace-Id=Root=1-58672d01-35cff255ac855b7975dd957b, Content-Type=application/json}\nSat Dec 31 03:59:04 UTC 2016 : Successfully completed execution\nSat Dec 31 03:59:04 UTC 2016 : Method completed with status: 200\n", 
-    "latency": 6454, 
+    "log": "Execution log for request test-request\nSat Dec 31 09:07:48 UTC 2016 : Starting execution for request: test-invoke-request\nSat Dec 31 09:07:48 UTC 2016 : HTTP Method: GET, Resource Path: /books\nSat Dec 31 09:07:48 UTC 2016 : Method request path: {}\nSat Dec 31 09:07:48 UTC 2016 : Method request query string: {}\nSat Dec 31 09:07:48 UTC 2016 : Method request headers: {}\nSat Dec 31 09:07:48 UTC 2016 : Method request body before transformations: \nSat Dec 31 09:07:48 UTC 2016 : Endpoint request URI: https://lambda.us-west-1.amazonaws.com/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations\nSat Dec 31 09:07:48 UTC 2016 : Endpoint request headers: {x-amzn-lambda-integration-tag=test-request, Authorization=******************************************************************************************************************************************************************************************************************************************************************************************************6de147, X-Amz-Date=20161231T090748Z, x-amzn-apigateway-api-id=lb2qgujjif, X-Amz-Source-Arn=arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/null/GET/books, Accept=application/json, User-Agent=AmazonAPIGateway_lb2qgujjif, X-Amz-Security-Token=FQoDYXdzEHEaDEILpsKTo45Ys1LrFCK3A+KOe5HXOSP3GfVAaRYHe1pDUJGHL9MtkFiPjORLFT+UCKjRqE7UFaGscTVG6PZXTuSyQev4XTyROfPylCrtDomGsoZF/iwy4rlJQIJ7elBceyeKu1OVdaT1A99PVeliaCAiDL6Veo1viWOnP+7c72nAaJ5jnyF/nHl/OLhFdFv4t/hnx3JePMk5YM89/6ofxUEVDNfzXxbZHRpTrG/4TPHwjPdoR5i9dEzWMU6Eo5xD4ldQ/m5B3RmrwpaPOuEq39LhJ8k/Vzo+pAfgJTq5ssbNwYOgh0RPSGVNMcoTkCwk0EMMT5vDbmQqZ2dW1a1tmQg9N2xR+QQy+RKMFgO5YY8fMxHnRSdMuuipxl79G1pktc [TRUNCATED]\nSat Dec 31 09:07:48 UTC 2016 : Endpoint request body after transformations: \nSat Dec 31 09:07:53 UTC 2016 : Endpoint response body before transformations: \"[{\\\"default\\\":{\\\"cost\\\":\\\"1.23\\\",\\\"id\\\":\\\"1\\\",\\\"bookname\\\":\\\"test book\\\",\\\"isbn\\\":\\\"123\\\"}}]\"\nSat Dec 31 09:07:53 UTC 2016 : Endpoint response headers: {x-amzn-Remapped-Content-Length=0, x-amzn-RequestId=99ab09b2-cf38-11e6-996f-f5f07af431af, Connection=keep-alive, Content-Length=94, Date=Sat, 31 Dec 2016 09:07:52 GMT, Content-Type=application/json}\nSat Dec 31 09:07:53 UTC 2016 : Method response body after transformations: Empty\nSat Dec 31 09:07:53 UTC 2016 : Method response headers: {X-Amzn-Trace-Id=Root=1-58677564-66f1e96642b16d2db703126e, Content-Type=application/json}\nSat Dec 31 09:07:53 UTC 2016 : Successfully completed execution\nSat Dec 31 09:07:53 UTC 2016 : Method completed with status: 200\n", 
+    "latency": 4744, 
     "headers": {
-        "X-Amzn-Trace-Id": "Root=1-58672d01-35cff255ac855b7975dd957b", 
+        "X-Amzn-Trace-Id": "Root=1-58677564-66f1e96642b16d2db703126e", 
         "Content-Type": "application/json"
     }
 }
 ```
-+
-Following up at https://forums.aws.amazon.com/thread.jspa?threadID=245998 and http://stackoverflow.com/questions/41371970/accessdeniedexception-unable-to-determine-service-operation-name-to-be-authoriz
+
 
 == TODO
 
