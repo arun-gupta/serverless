@@ -21,8 +21,16 @@ public class BucketGetAll implements RequestHandler<Book, String> {
                 .simple(select("*")
                 .from(i(CouchbaseUtil.getBucketName()))
                 .limit(10));
-        
+//        N1qlQuery query = N1qlQuery.simple("SELECT * FROM " + CouchbaseUtil.getBucketName() + " LIMIT 10");
+
         N1qlQueryResult result = CouchbaseUtil.getBucket(logger).query(query);
         return result.allRows().toString();
+    }
+
+    public static void main(String[] args) {
+        N1qlQuery query = N1qlQuery.simple("SELECT * FROM " + CouchbaseUtil.getBucketName() + " LIMIT 10");
+
+        String result = CouchbaseUtil.getBucket(null).query(query).allRows().toString();
+        System.out.println(result);
     }
 }

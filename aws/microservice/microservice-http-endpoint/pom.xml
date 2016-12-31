@@ -43,6 +43,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>org.sample.serverless.aws.couchbase.BucketGetAll</mainClass>
+                    <systemProperties>
+                        <systemproperty>
+                            <key>COUCHBASE_HOST</key>
+                            <value>ec2-52-53-193-176.us-west-1.compute.amazonaws.com</value>
+                        </systemproperty>
+                    </systemProperties>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <name>microservice-http-endpoint</name>

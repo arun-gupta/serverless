@@ -14,8 +14,8 @@ public class CouchbaseUtil {
     
     public static CouchbaseCluster getCluster(LambdaLogger logger) {
         if (null == cluster) {
-            System.out.println("env: " + System.getenv("COUCHBASE_HOST"));
-            cluster = CouchbaseCluster.create(System.getenv("COUCHBASE_HOST"));
+            System.out.println("env: " + System.getProperty("COUCHBASE_HOST"));
+            cluster = CouchbaseCluster.create(System.getProperty("COUCHBASE_HOST"));
         }
         return cluster;
     }
