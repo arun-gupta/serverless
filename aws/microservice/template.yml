@@ -15,6 +15,12 @@ Resources:
           S3_BUCKET: serverless-microservice
           COUCHBASE_HOST: ec2-52-53-193-176.us-west-1.compute.amazonaws.com
       Role: arn:aws:iam::598307997273:role/microserviceRole
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: get
   MicroservicePost:
     Type: AWS::Serverless::Function
     Properties:
@@ -28,4 +34,10 @@ Resources:
           S3_BUCKET: serverless-microservice
           COUCHBASE_HOST: ec2-52-53-193-176.us-west-1.compute.amazonaws.com
       Role: arn:aws:iam::598307997273:role/microserviceRole
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: post
 
