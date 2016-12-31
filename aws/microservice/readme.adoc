@@ -321,6 +321,8 @@ to see the response
     }
 }
 ```
++
+. Get detailed logs using `aws logs filter-log-events --log-group /aws/lambda/MicroservicePost`.
 
 === GET method
 
@@ -413,11 +415,16 @@ to see the response
     }
 }
 ```
++
+. Get detailed logs using `aws logs filter-log-events --log-group /aws/lambda/MicroserviceGetAll`.
 
 
 == TODO
 
-. Generate Swagger endpoint for API
+
 . Create http://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html[Serverless Application Model] for the application
+. Add Single Page Application using S3 and CloudFront
+. Add authentication, authorization, throttling of API
+. Generate Swagger endpoint for API
 . AWS Step Function: https://aws.amazon.com/step-functions/ and https://www.youtube.com/watch?v=75MRve4nv8s.
 . https://aws.amazon.com/blogs/compute/continuous-deployment-for-serverless-applications/[Continuous Deployment for Serverless Application]
