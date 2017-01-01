@@ -12,7 +12,7 @@ import java.io.IOException;
 public class Book {
 
     private String id;
-    private String bookname;
+    private String name;
     private String isbn;
     private String cost;
 
@@ -27,12 +27,12 @@ public class Book {
         this.id = id;
     }
 
-    public String getBookname() {
-        return bookname;
+    public String getName() {
+        return name;
     }
 
-    public void setBookname(String bookname) {
-        this.bookname = bookname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getIsbn() {
