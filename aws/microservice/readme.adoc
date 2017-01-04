@@ -4,7 +4,7 @@ This document explains how to use AWS API Gateway and AWS Lambda to create a sim
 
 Detailed steps are at http://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example-configure-event-source.html.
 
-== IAM Roles
+== AWS IAM Roles
 
 IAM roles will have policies and trust relationships that will allow this role to be used in API Gateway and execute Lambda function.
 
@@ -25,6 +25,15 @@ aws iam put-role-policy \
 
 More details: http://docs.aws.amazon.com/apigateway/latest/developerguide/setting-up.html
 
+== Setup Couchbase
+
+. Launch Ubuntu 14.04 LTS EC2 instance
+. Login to the instance: `ssh -i <key> ubuntu@<public-ip>`
+. Download Couchbase: `wget http://packages.couchbase.com/releases/4.5.0/couchbase-server-community_4.5.0-ubuntu14.04_amd64.deb`
+. Install Couchbase: `sudo dpkg -i couchbase-server-community_4.5.0-ubuntu14.04_amd64.deb`
+. Login to Couchbase Console http://<public-ip>:8091 and configure Data, Query and Index service
+. Create index: `create index default_index on default(id);`
+
 == Lambda Functions
 
 . Create a deployment package: `mvn -f microservice-http-endpoint/pom.xml package`
@@ -41,6 +50,15 @@ SAM specification: https://github.com/awslabs/serverless-application-model/blob/
 ```
 aws cloudformation deploy \
 --template-file template.yml \
+--stack-name microservice \
+--region us-west-2
+```
++
+. Test
+. Delete SAM
++
+```
+aws cloudformation delete-stack \
 --stack-name microservice \
 --region us-west-2
 ```
