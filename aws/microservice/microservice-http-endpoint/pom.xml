@@ -59,7 +59,7 @@
                     <systemProperties>
                         <systemproperty>
                             <key>COUCHBASE_HOST</key>
-                            <value>ec2-52-53-193-176.us-west-1.compute.amazonaws.com</value>
+                            <value>ec2-35-163-21-104.us-west-2.compute.amazonaws.com</value>
                         </systemproperty>
                     </systemProperties>
                 </configuration>
