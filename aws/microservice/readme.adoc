@@ -32,7 +32,7 @@ More details: http://docs.aws.amazon.com/apigateway/latest/developerguide/settin
 . Download Couchbase: `wget http://packages.couchbase.com/releases/4.5.0/couchbase-server-community_4.5.0-ubuntu14.04_amd64.deb`
 . Install Couchbase: `sudo dpkg -i couchbase-server-community_4.5.0-ubuntu14.04_amd64.deb`
 . Login to Couchbase Console http://<public-ip>:8091 and configure Data, Query and Index service
-. Create index: `create index default_index on default(id);`
+. Create index: `create primary index default_index on default;`
 
 == Lambda Functions
 
