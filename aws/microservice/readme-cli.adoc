@@ -1,5 +1,7 @@
 = Serverless Lambda and API Gateway Using AWS CLI
 
+Linked from link:readme.adoc[Microservice using AWS API Gateway, AWS Lambda and Couchbase].
+
 . Create Lambda functions, one for each endpoint:
 +
 ```
