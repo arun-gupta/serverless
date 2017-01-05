@@ -16,8 +16,8 @@ public class GatewayResponse {
     public static Map<String, String> HEADERS_TEXT = new HashMap<>();
     
     public GatewayResponse() {
-        HEADERS_JSON.put("Content-Type", "text/plain");
-        HEADERS_TEXT.put("Content-Type", "application/json");
+        HEADERS_JSON.put("Content-Type", "application/json");
+        HEADERS_TEXT.put("Content-Type", "text/plain");
     }
 
     public GatewayResponse(int status, String body) {
