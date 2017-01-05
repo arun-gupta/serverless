@@ -51,14 +51,14 @@ public class Book {
         this.cost = cost;
     }
 
-    static JsonDocument toJson(Book bean) throws JsonProcessingException {
+    public static JsonDocument toJson(Book bean) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(bean);
 
         return JsonDocument.create(bean.getId(), JsonObject.fromJson(json));
     }
 
-    static Book fromJson(JsonDocument json) {
+    public static Book fromJson(JsonDocument json) {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(json.content().toString(), Book.class);
