@@ -1,5 +1,6 @@
 package org.sample.serverless.aws.couchbase.gateway;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,12 +13,19 @@ public class GatewayResponse {
     private int status;
     private Map<String, String> headers;
 
-    public static Map<String, String> HEADERS_JSON = new HashMap<>();
-    public static Map<String, String> HEADERS_TEXT = new HashMap<>();
+    public static final Map<String, String> HEADERS_JSON = Collections.unmodifiableMap(new HashMap<String, String>() {
+        {
+            put("Content-Type", "application/json");
+        }
+    });
+
+    public static final Map<String, String> HEADERS_TEXT = Collections.unmodifiableMap(new HashMap<String, String>() {
+        {
+            put("Content-Type", "text/plain");
+        }
+    });
     
     public GatewayResponse() {
-        HEADERS_JSON.put("Content-Type", "application/json");
-        HEADERS_TEXT.put("Content-Type", "text/plain");
     }
 
     public GatewayResponse(int status, String body) {
