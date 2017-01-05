@@ -29,7 +29,7 @@ Resources:
   MicroserviceGetAllGateway:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: org.sample.serverless.aws.couchbase.apigateway.BucketGetAll
+      Handler: org.sample.serverless.aws.couchbase.gateway.BucketGetAll
       Runtime: java8
       CodeUri: s3://serverless-microservice/microservice-http-endpoint-1.0-SNAPSHOT.jar
       Timeout: 30
@@ -47,7 +47,7 @@ Resources:
   MicroservicePostGateway:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: org.sample.serverless.aws.couchbase.BucketPost
+      Handler: org.sample.serverless.aws.couchbase.gateway.BucketPost
       Runtime: java8
       CodeUri: s3://serverless-microservice/microservice-http-endpoint-1.0-SNAPSHOT.jar
       Timeout: 30
