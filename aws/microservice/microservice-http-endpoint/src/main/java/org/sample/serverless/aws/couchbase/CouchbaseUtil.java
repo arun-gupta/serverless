@@ -12,7 +12,7 @@ public class CouchbaseUtil {
     private static CouchbaseCluster cluster;
     private static Bucket bucket;
     
-    public static CouchbaseCluster getCluster(LambdaLogger logger) {
+    public static CouchbaseCluster getCluster() {
         if (null == cluster) {
             String host = System.getProperty("COUCHBASE_HOST");
             if (host == null) {
@@ -26,11 +26,10 @@ public class CouchbaseUtil {
         return cluster;
     }
     
-    public static Bucket getBucket(LambdaLogger logger) {
+    public static Bucket getBucket() {
         while (null == bucket) {
             System.out.println("Trying to connect to the database");
-//            logger.log("");
-            bucket = getCluster(logger).openBucket(getBucketName(), 2L, TimeUnit.MINUTES);
+            bucket = getCluster().openBucket(getBucketName(), 2L, TimeUnit.MINUTES);
 
             try {
                 Thread.sleep(3000);

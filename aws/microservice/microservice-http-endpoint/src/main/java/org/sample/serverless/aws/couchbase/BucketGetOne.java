@@ -23,7 +23,7 @@ public class BucketGetOne implements RequestHandler<Book, String> {
                 .simple(select("*")
                 .from(i(CouchbaseUtil.getBucketName()))
                 .where(x("id").eq(request.getId())));        
-        N1qlQueryResult result = CouchbaseUtil.getBucket(logger).query(query);
+        N1qlQueryResult result = CouchbaseUtil.getBucket().query(query);
         if (result.finalSuccess() && !result.allRows().isEmpty()) {
             return result.allRows().get(0).toString();
         }

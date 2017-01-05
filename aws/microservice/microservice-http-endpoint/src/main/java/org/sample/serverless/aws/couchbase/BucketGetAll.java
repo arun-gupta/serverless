@@ -13,8 +13,6 @@ import static com.couchbase.client.java.query.Select.select;
  */
 public class BucketGetAll implements RequestHandler<Book, String> {
 
-    protected LambdaLogger logger;
-
     @Override
     public String handleRequest(Book request, Context context) {
         N1qlQuery query = N1qlQuery
@@ -23,7 +21,7 @@ public class BucketGetAll implements RequestHandler<Book, String> {
                 .limit(10));
 //        N1qlQuery query = N1qlQuery.simple("SELECT * FROM " + CouchbaseUtil.getBucketName() + " LIMIT 10");
 
-        String result = CouchbaseUtil.getBucket(logger).query(query).allRows().toString();
+        String result = CouchbaseUtil.getBucket().query(query).allRows().toString();
         System.out.println("Lambda: " + result);
 
         return result;

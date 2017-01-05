@@ -22,7 +22,7 @@ public class BucketGetAll implements RequestHandler<GatewayRequest, GatewayRespo
                             .limit(10));
 //        N1qlQuery query = N1qlQuery.simple("SELECT * FROM " + CouchbaseUtil.getBucketName() + " LIMIT 10");
 
-            String result = CouchbaseUtil.getBucket(null).query(query).allRows().toString();
+            String result = CouchbaseUtil.getBucket().query(query).allRows().toString();
 
             return new GatewayResponse(200, result, GatewayResponse.HEADERS_JSON);
         } catch (ConfigurationException e) {
