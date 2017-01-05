@@ -5,17 +5,16 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.couchbase.client.core.config.ConfigurationException;
 import com.couchbase.client.java.query.N1qlQuery;
 import static com.couchbase.client.java.query.dsl.Expression.i;
-import org.sample.serverless.aws.couchbase.Book;
 import org.sample.serverless.aws.couchbase.CouchbaseUtil;
 import static com.couchbase.client.java.query.Select.select;
 
 /**
  * @author arungupta
  */
-public class BucketGetAll implements RequestHandler<Book, GatewayResponse> {
+public class BucketGetAll implements RequestHandler<GatewayRequest, GatewayResponse> {
 
     @Override
-    public GatewayResponse handleRequest(Book request, Context context) {
+    public GatewayResponse handleRequest(GatewayRequest request, Context context) {
         try {
             N1qlQuery query = N1qlQuery
                     .simple(select("*")
