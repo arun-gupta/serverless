@@ -1,4 +1,4 @@
-= Couchbase Microservice HTTP Endpoint
+= Microservice using AWS API Gateway, AWS Lambda and Couchbase
 
 This document explains how to use AWS API Gateway and AWS Lambda to create a simple microservice. The Lambda function uses Java runtime and the data is stored in Couchbase 4.5.0 running in EC2.
 
