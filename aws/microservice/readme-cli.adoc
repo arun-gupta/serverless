@@ -259,7 +259,7 @@ aws apigateway test-invoke-method \
 --resource-id mx6cag \
 --http-method POST \
 --path-with-query-string "" \
---body "{\"id\": \"1\", \"bookname\": \"test book\", \"isbn\": \"123\", \"cost\": \"1.23\"}"
+--body "{\"id\": \"1\", \"name\": \"test book\", \"isbn\": \"123\", \"cost\": \"1.23\"}"
 ```
 +
 to see the response
