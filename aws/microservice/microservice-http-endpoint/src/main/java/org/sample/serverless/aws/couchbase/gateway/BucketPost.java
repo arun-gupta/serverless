@@ -21,7 +21,8 @@ public class BucketPost implements RequestHandler<GatewayRequest, GatewayRespons
         System.out.println("json: " + Book.fromStringToJson(request.getBody()));
         try {
             JsonDocument document = CouchbaseUtil.getBucket(logger).upsert(Book.fromStringToJson(request.getBody()));
-            return new GatewayResponse(200, document.toString(), GatewayResponse.HEADERS_JSON);
+            System.out.println("document: " + document.content().toString());
+            return new GatewayResponse(200, document.content().toString(), GatewayResponse.HEADERS_JSON);
         } catch (Exception ex) {
             return new GatewayResponse(400, ex.getMessage(), GatewayResponse.HEADERS_TEXT);
         }
