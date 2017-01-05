@@ -50,16 +50,27 @@ SAM specification: https://github.com/awslabs/serverless-application-model/blob/
 ```
 aws cloudformation deploy \
 --template-file template.yml \
---stack-name microservice \
+--stack-name microservice-gateway \
 --region us-west-2
 ```
 +
 . Test
+.. Sample data for POST:
++
+```
+{
+    "id": "1",
+    "name": "test book",
+    "isbn": "1234",
+    "cost": "12.34"
+}
+```
++
 . Delete SAM
 +
 ```
 aws cloudformation delete-stack \
---stack-name microservice \
+--stack-name microservice-gateway \
 --region us-west-2
 ```
 
