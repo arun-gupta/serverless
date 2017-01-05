@@ -10,7 +10,7 @@ import java.util.Map;
 public class GatewayResponse {
 
     private String body;
-    private int status;
+    private int statusCode;
     private Map<String, String> headers;
 
     public static final Map<String, String> HEADERS_JSON = Collections.unmodifiableMap(new HashMap<String, String>() {
@@ -28,13 +28,13 @@ public class GatewayResponse {
     public GatewayResponse() {
     }
 
-    public GatewayResponse(int status, String body) {
-        this(status, body, null);
+    public GatewayResponse(int statusCode, String body) {
+        this(statusCode, body, null);
     }
 
-    public GatewayResponse(int status, String body, Map<String, String> headers) {
+    public GatewayResponse(int statusCode, String body, Map<String, String> headers) {
         this.body = body;
-        this.status = status;
+        this.statusCode = statusCode;
         this.headers = headers;
     }
 
@@ -46,12 +46,12 @@ public class GatewayResponse {
         this.body = body;
     }
 
-    public int getStatus() {
-        return status;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     public Map<String, String> getHeaders() {
