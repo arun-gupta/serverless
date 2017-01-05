@@ -1,7 +1,6 @@
 package org.sample.serverless.aws.couchbase;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.couchbase.client.java.query.N1qlQuery;
 import static com.couchbase.client.java.query.dsl.Expression.i;
