@@ -6,14 +6,14 @@
 aws lambda create-function \
 --function-name MicroserviceGetAll \
 --role arn:aws:iam::598307997273:role/microserviceRole \
---handler org.sample.serverless.aws.couchbase.BucketGetAll \
+--handler org.sample.serverless.aws.couchbase.apigateway.BucketGetAll \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
 --description "Microservice HTTP Endpoint - Get All" \
 --runtime java8 \
---region us-west-1 \
+--region us-west-2 \
 --timeout 30 \
 --memory-size 1024 \
---environment Variables={COUCHBASE_HOST=ec2-52-53-193-176.us-west-1.compute.amazonaws.com} \
+--environment Variables={COUCHBASE_HOST=ec2-35-163-21-104.us-west-2.compute.amazonaws.com} \
 --publish
 ```
 +
@@ -21,14 +21,14 @@ aws lambda create-function \
 aws lambda create-function \
 --function-name MicroservicePost \
 --role arn:aws:iam::598307997273:role/microserviceRole \
---handler org.sample.serverless.aws.couchbase.BucketPost \
+--handler org.sample.serverless.aws.couchbase.apigateway.BucketPost \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
 --description "Microservice HTTP Endpoint - Post" \
 --runtime java8 \
---region us-west-1 \
+--region us-west-2 \
 --timeout 30 \
 --memory-size 1024 \
---environment Variables={COUCHBASE_HOST=ec2-52-53-193-176.us-west-1.compute.amazonaws.com} \
+--environment Variables={COUCHBASE_HOST=ec2-35-163-21-104.us-west-2.compute.amazonaws.com} \
 --publish
 ```
 +
@@ -39,7 +39,7 @@ mvn clean package;
 aws lambda update-function-code \
 --function-name MicroservicePost \
 --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/microservice/microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar \
---region us-west-1 \
+--region us-west-2 \
 --publish
 ```
 
@@ -57,22 +57,22 @@ to see the output:
 +
 ```
 {
-    "name": "Book", 
-    "id": "lb2qgujjif", 
-    "createdDate": 1482998945
+    "name": "microservice", 
+    "id": "3fsnu7i9k5", 
+    "createdDate": 1483575361
 }
 ```
 +
 Value of `id` attribute is `api-id`.
 +
-*Find the root id*: `aws apigateway get-resources --rest-api-id lb2qgujjif`. It shows the output:
+*Find the root id*: `aws apigateway get-resources --rest-api-id 3fsnu7i9k5`. It shows the output:
 +
 ```
 {
     "items": [
         {
             "path": "/", 
-            "id": "hgxogdkheg"
+            "id": "s0oun9kp76"
         }
     ]
 }
@@ -84,8 +84,8 @@ Value of `id` attribute is `root-id`. This is also the `parent-id` for top level
 +
 ```
 aws apigateway create-resource \
---rest-api-id lb2qgujjif \
---parent-id hgxogdkheg \
+--rest-api-id 3fsnu7i9k5 \
+--parent-id s0oun9kp76 \
 --path-part books
 ```
 +
@@ -95,8 +95,8 @@ to see the output:
 {
     "path": "/books", 
     "pathPart": "books", 
-    "id": "vrpkod", 
-    "parentId": "hgxogdkheg"
+    "id": "ds9qul", 
+    "parentId": "s0oun9kp76"
 }
 ```
 +
@@ -108,8 +108,8 @@ Value of `id` attribute is `resource-id`.
 +
 ```
 aws apigateway put-method \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method POST \
 --authorization-type NONE
 ```
@@ -129,12 +129,12 @@ to see the response:
 +
 ```
 aws apigateway put-integration \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method POST \
 --type AWS \
 --integration-http-method POST \
---uri arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost/invocations
+--uri arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:598307997273:function:MicroservicePost/invocations
 ```
 +
 to see the output:
@@ -145,8 +145,8 @@ to see the output:
     "passthroughBehavior": "WHEN_NO_MATCH", 
     "cacheKeyParameters": [], 
     "type": "AWS", 
-    "uri": "arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost/invocations", 
-    "cacheNamespace": "vrpkod"
+    "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:598307997273:function:MicroservicePost/invocations", 
+    "cacheNamespace": "ds9qul"
 }
 ```
 +
@@ -154,8 +154,8 @@ to see the output:
 +
 ```
 aws apigateway put-method-response \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method POST \
 --status-code 200 \
 --response-models "{\"application/json\": \"Empty\"}"
@@ -176,8 +176,8 @@ to see the response:
 +
 ```
 aws apigateway put-integration-response \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method POST \
 --status-code 200 \
 --response-templates "{\"application/json\": \"Empty\"}"
@@ -198,7 +198,7 @@ to see the response:
 +
 ```
 aws apigateway create-deployment \
---rest-api-id lb2qgujjif \
+--rest-api-id 3fsnu7i9k5 \
 --stage-name test
 ```
 +
@@ -206,8 +206,8 @@ to see the output:
 +
 ```
 {
-    "id": "9wi991", 
-    "createdDate": 1482999187
+    "id": "roqra5", 
+    "createdDate": 1483575542
 }
 ```
 +
@@ -219,14 +219,14 @@ aws lambda add-permission \
 --statement-id apigateway-test-post-1 \
 --action lambda:InvokeFunction \
 --principal apigateway.amazonaws.com \
---source-arn "arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/*/POST/books"
+--source-arn "arn:aws:execute-api:us-west-2:598307997273:3fsnu7i9k5/*/POST/books"
 ```
 +
 to see the response
 +
 ```
 {
-    "Statement": "{\"Sid\":\"apigateway-test-post-1\",\"Resource\":\"arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":[\"lambda:InvokeFunction\"],\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/*/POST/books\"}}}"
+    "Statement": "{\"Sid\":\"apigateway-test-post-1\",\"Resource\":\"arn:aws:lambda:us-west-2:598307997273:function:MicroservicePost\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":[\"lambda:InvokeFunction\"],\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-west-2:598307997273:lb2qgujjif/*/POST/books\"}}}"
 }
 ```
 +
@@ -238,14 +238,14 @@ aws lambda add-permission \
 --statement-id apigateway-test-post-2 \
 --action lambda:InvokeFunction \
 --principal apigateway.amazonaws.com \
---source-arn "arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/test/GET/books"
+--source-arn "arn:aws:execute-api:us-west-2:598307997273:3fsnu7i9k5/test/GET/books"
 ```
 +
 to see the output
 +
 ```
 {
-    "Statement": "{\"Sid\":\"apigateway-test-post-2\",\"Resource\":\"arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":[\"lambda:InvokeFunction\"],\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/test/GET/books\"}}}"
+    "Statement": "{\"Sid\":\"apigateway-test-post-2\",\"Resource\":\"arn:aws:lambda:us-west-2:598307997273:function:MicroservicePost\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":[\"lambda:InvokeFunction\"],\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-west-2:598307997273:lb2qgujjif/test/GET/books\"}}}"
 }
 ```
 +
@@ -253,11 +253,11 @@ to see the output
 +
 ```
 aws apigateway test-invoke-method \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method POST \
 --path-with-query-string "" \
---body "{\"id\": \"1\", \"bookname\": \"test book\", \"isbn\": \"123\", \"cost\": \"1.23\"}"
+--body "{\"id\": \"6\", \"bookname\": \"test book\", \"isbn\": \"123\", \"cost\": \"1.23\"}"
 ```
 +
 to see the response
@@ -266,10 +266,10 @@ to see the response
 {
     "status": 200, 
     "body": "Empty", 
-    "log": "Execution log for request test-request\nThu Dec 29 08:16:05 UTC 2016 : Starting execution for request: test-invoke-request\nThu Dec 29 08:16:05 UTC 2016 : HTTP Method: POST, Resource Path: /books\nThu Dec 29 08:16:05 UTC 2016 : Method request path: {}\nThu Dec 29 08:16:05 UTC 2016 : Method request query string: {}\nThu Dec 29 08:16:05 UTC 2016 : Method request headers: {}\nThu Dec 29 08:16:05 UTC 2016 : Method request body before transformations: {\"id\": \"1\", \"bookname\": \"test book\", \"isbn\": \"123\", \"cost\": \"1.23\"}\nThu Dec 29 08:16:05 UTC 2016 : Endpoint request URI: https://lambda.us-west-1.amazonaws.com/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroservicePost/invocations\nThu Dec 29 08:16:05 UTC 2016 : Endpoint request headers: {x-amzn-lambda-integration-tag=test-request, Authorization=****************************************************************************************************************************************************************************************************************************************************************************************************************************************c8bb85, X-Amz-Date=20161229T081605Z, x-amzn-apigateway-api-id=lb2qgujjif, X-Amz-Source-Arn=arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/null/POST/books, Accept=application/json, User-Agent=AmazonAPIGateway_lb2qgujjif, Host=lambda.us-west-1.amazonaws.com, X-Amz-Content-Sha256=559d0296d96ec5647eef6381602fe5e7f55dd17065864fafb4f581d106aa92f4, X-Amzn-Trace-Id=Root=1-5864c645-8494974a41a3a16c8d2f9929, Content-Type=application/json}\nThu Dec 29 08:16:05 UTC 2016 : Endpoint request body after transformations: {\"id\": \"1\", \"bookname\": \"test book\", \"isbn\": \"123\", \"cost\": \"1.23\"}\nThu Dec 29 08:16:10 UTC 2016 : Endpoint response body before transformations: \"{\\\"cost\\\":\\\"1.23\\\",\\\"id\\\":\\\"1\\\",\\\"bookname\\\":\\\"test book\\\",\\\"isbn\\\":\\\"123\\\"}\"\nThu Dec 29 08:16:10 UTC 2016 : Endpoint response headers: {x-amzn-Remapped-Content-Length=0, x-amzn-RequestId=0b25323b-cd9f-11e6-8bd4-292925ba63a9, Connection=keep-alive, Content-Length=78, Date=Thu, 29 Dec 2016 08:16:10 GMT, Content-Type=application/json}\nThu Dec 29 08:16:10 UTC 2016 : Method response body after transformations: Empty\nThu Dec 29 08:16:10 UTC 2016 : Method response headers: {X-Amzn-Trace-Id=Root=1-5864c645-8494974a41a3a16c8d2f9929, Content-Type=application/json}\nThu Dec 29 08:16:10 UTC 2016 : Successfully completed execution\nThu Dec 29 08:16:10 UTC 2016 : Method completed with status: 200\n", 
-    "latency": 5091, 
+    "log": "Execution log for request test-request\nThu Jan 05 00:21:05 UTC 2017 : Starting execution for request: test-invoke-request\nThu Jan 05 00:21:05 UTC 2017 : HTTP Method: POST, Resource Path: /books\nThu Jan 05 00:21:05 UTC 2017 : Method request path: {}\nThu Jan 05 00:21:05 UTC 2017 : Method request query string: {}\nThu Jan 05 00:21:05 UTC 2017 : Method request headers: {}\nThu Jan 05 00:21:05 UTC 2017 : Method request body before transformations: {\"id\": \"6\", \"bookname\": \"test book\", \"isbn\": \"123\", \"cost\": \"1.23\"}\nThu Jan 05 00:21:05 UTC 2017 : Endpoint request URI: https://lambda.us-west-2.amazonaws.com/2015-03-31/functions/arn:aws:lambda:us-west-2:598307997273:function:MicroservicePost/invocations\nThu Jan 05 00:21:05 UTC 2017 : Endpoint request headers: {x-amzn-lambda-integration-tag=test-request, Authorization=****************************************************************************************************************************************************************************************************************************************************************************************************************************************7512bb, X-Amz-Date=20170105T002105Z, x-amzn-apigateway-api-id=3fsnu7i9k5, X-Amz-Source-Arn=arn:aws:execute-api:us-west-2:598307997273:3fsnu7i9k5/null/POST/books, Accept=application/json, User-Agent=AmazonAPIGateway_3fsnu7i9k5, X-Amz-Security-Token=FQoDYXdzEOD//////////wEaDLaeIXcwMSJWR0cjFyK3A9FDvWrhcrarA8B2AJmUZexd4njsnjpPVchnXHgVc1wGrJhzvu5nYZIdJ2hvzerGLFg4HNaLCLUOmMGV+V9VQUBpYcAD/TGA6ToM7IARE99o22v2bVoIVDPgb7EfyTQRHcyPtPf6Lvgxr3aaZSaAGS0KSxPDotl4LUuIfRSFlabRX7fbTAn+h85DDVogQ2qb7UsPl0JQCsbqMbTnHdlEPG4InvuL61LsRXZzFnPugRbKXAtdWt7IReQAtDzqUk8dNfzJY2yOtY8XLlVR2yK7PoLqYIYPdzBTvYEvPTGhWuniFCa+/ALRXkzckoh4Plg [TRUNCATED]\nThu Jan 05 00:21:05 UTC 2017 : Endpoint request body after transformations: {\"id\": \"6\", \"bookname\": \"test book\", \"isbn\": \"123\", \"cost\": \"1.23\"}\nThu Jan 05 00:21:05 UTC 2017 : Endpoint response body before transformations: {\"errorMessage\":\"Class not found: org.sample.serverless.aws.couchbase.apigateway.BucketPost\",\"errorType\":\"class java.lang.ClassNotFoundException\"}\nThu Jan 05 00:21:05 UTC 2017 : Endpoint response headers: {x-amzn-Remapped-Content-Length=0, x-amzn-RequestId=d8f45cd8-d2dc-11e6-b83b-f54427452e6e, Connection=keep-alive, Content-Length=146, X-Amz-Function-Error=Unhandled, Date=Thu, 05 Jan 2017 00:21:05 GMT, Content-Type=application/json}\nThu Jan 05 00:21:05 UTC 2017 : Method response body after transformations: Empty\nThu Jan 05 00:21:05 UTC 2017 : Method response headers: {X-Amzn-Trace-Id=Root=1-586d9171-74e3cf5c46e18a79117fbd55, Content-Type=application/json}\nThu Jan 05 00:21:05 UTC 2017 : Successfully completed execution\nThu Jan 05 00:21:05 UTC 2017 : Method completed with status: 200\n", 
+    "latency": 59, 
     "headers": {
-        "X-Amzn-Trace-Id": "Root=1-5864c645-8494974a41a3a16c8d2f9929", 
+        "X-Amzn-Trace-Id": "Root=1-586d9171-74e3cf5c46e18a79117fbd55", 
         "Content-Type": "application/json"
     }
 }
@@ -283,8 +283,8 @@ to see the response
 +
 ```
 aws apigateway put-method \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method GET \
 --authorization-type NONE
 ```
@@ -293,20 +293,20 @@ aws apigateway put-method \
 +
 ```
 aws apigateway put-integration \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method GET \
 --type AWS \
 --integration-http-method POST \
---uri arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations
+--uri arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:598307997273:function:MicroserviceGetAll/invocations
 ```
 +
 .. Set `content-type` of GET method response
 +
 ```
 aws apigateway put-method-response \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method GET \
 --status-code 200 \
 --response-models "{\"application/json\": \"Empty\"}"
@@ -316,8 +316,8 @@ aws apigateway put-method-response \
 +
 ```
 aws apigateway put-integration-response \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method GET \
 --status-code 200 \
 --response-templates "{\"application/json\": \"Empty\"}"
@@ -331,7 +331,7 @@ aws lambda add-permission \
 --statement-id apigateway-test-getall-1 \
 --action lambda:InvokeFunction \
 --principal apigateway.amazonaws.com \
---source-arn "arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/*/GET/books"
+--source-arn "arn:aws:execute-api:us-west-2:598307997273:lb2qgujjif/*/GET/books"
 ```
 +
 Grant permission to the deployed API:
@@ -342,15 +342,15 @@ aws lambda add-permission \
 --statement-id apigateway-test-getall-2 \
 --action lambda:InvokeFunction \
 --principal apigateway.amazonaws.com \
---source-arn "arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/test/GET/books"
+--source-arn "arn:aws:execute-api:us-west-2:598307997273:lb2qgujjif/test/GET/books"
 ```
 +
 . *Test method*
 +
 ```
 aws apigateway test-invoke-method \
---rest-api-id lb2qgujjif \
---resource-id vrpkod \
+--rest-api-id 3fsnu7i9k5 \
+--resource-id ds9qul \
 --http-method GET
 ```
 +
@@ -358,14 +358,10 @@ to see the response
 +
 ```
 {
-    "status": 200, 
-    "body": "Empty", 
-    "log": "Execution log for request test-request\nSat Dec 31 09:07:48 UTC 2016 : Starting execution for request: test-invoke-request\nSat Dec 31 09:07:48 UTC 2016 : HTTP Method: GET, Resource Path: /books\nSat Dec 31 09:07:48 UTC 2016 : Method request path: {}\nSat Dec 31 09:07:48 UTC 2016 : Method request query string: {}\nSat Dec 31 09:07:48 UTC 2016 : Method request headers: {}\nSat Dec 31 09:07:48 UTC 2016 : Method request body before transformations: \nSat Dec 31 09:07:48 UTC 2016 : Endpoint request URI: https://lambda.us-west-1.amazonaws.com/2015-03-31/functions/arn:aws:lambda:us-west-1:598307997273:function:MicroserviceGetAll/invocations\nSat Dec 31 09:07:48 UTC 2016 : Endpoint request headers: {x-amzn-lambda-integration-tag=test-request, Authorization=******************************************************************************************************************************************************************************************************************************************************************************************************6de147, X-Amz-Date=20161231T090748Z, x-amzn-apigateway-api-id=lb2qgujjif, X-Amz-Source-Arn=arn:aws:execute-api:us-west-1:598307997273:lb2qgujjif/null/GET/books, Accept=application/json, User-Agent=AmazonAPIGateway_lb2qgujjif, X-Amz-Security-Token=FQoDYXdzEHEaDEILpsKTo45Ys1LrFCK3A+KOe5HXOSP3GfVAaRYHe1pDUJGHL9MtkFiPjORLFT+UCKjRqE7UFaGscTVG6PZXTuSyQev4XTyROfPylCrtDomGsoZF/iwy4rlJQIJ7elBceyeKu1OVdaT1A99PVeliaCAiDL6Veo1viWOnP+7c72nAaJ5jnyF/nHl/OLhFdFv4t/hnx3JePMk5YM89/6ofxUEVDNfzXxbZHRpTrG/4TPHwjPdoR5i9dEzWMU6Eo5xD4ldQ/m5B3RmrwpaPOuEq39LhJ8k/Vzo+pAfgJTq5ssbNwYOgh0RPSGVNMcoTkCwk0EMMT5vDbmQqZ2dW1a1tmQg9N2xR+QQy+RKMFgO5YY8fMxHnRSdMuuipxl79G1pktc [TRUNCATED]\nSat Dec 31 09:07:48 UTC 2016 : Endpoint request body after transformations: \nSat Dec 31 09:07:53 UTC 2016 : Endpoint response body before transformations: \"[{\\\"default\\\":{\\\"cost\\\":\\\"1.23\\\",\\\"id\\\":\\\"1\\\",\\\"bookname\\\":\\\"test book\\\",\\\"isbn\\\":\\\"123\\\"}}]\"\nSat Dec 31 09:07:53 UTC 2016 : Endpoint response headers: {x-amzn-Remapped-Content-Length=0, x-amzn-RequestId=99ab09b2-cf38-11e6-996f-f5f07af431af, Connection=keep-alive, Content-Length=94, Date=Sat, 31 Dec 2016 09:07:52 GMT, Content-Type=application/json}\nSat Dec 31 09:07:53 UTC 2016 : Method response body after transformations: Empty\nSat Dec 31 09:07:53 UTC 2016 : Method response headers: {X-Amzn-Trace-Id=Root=1-58677564-66f1e96642b16d2db703126e, Content-Type=application/json}\nSat Dec 31 09:07:53 UTC 2016 : Successfully completed execution\nSat Dec 31 09:07:53 UTC 2016 : Method completed with status: 200\n", 
-    "latency": 4744, 
-    "headers": {
-        "X-Amzn-Trace-Id": "Root=1-58677564-66f1e96642b16d2db703126e", 
-        "Content-Type": "application/json"
-    }
+    "status": 500, 
+    "body": "{\"message\": \"Internal server error\"}", 
+    "log": "Execution log for request test-request\nThu Jan 05 00:26:27 UTC 2017 : Starting execution for request: test-invoke-request\nThu Jan 05 00:26:27 UTC 2017 : HTTP Method: GET, Resource Path: /books\nThu Jan 05 00:26:27 UTC 2017 : Method request path: {}\nThu Jan 05 00:26:27 UTC 2017 : Method request query string: {}\nThu Jan 05 00:26:27 UTC 2017 : Method request headers: {}\nThu Jan 05 00:26:27 UTC 2017 : Method request body before transformations: \nThu Jan 05 00:26:27 UTC 2017 : Endpoint request URI: https://lambda.us-west-2.amazonaws.com/2015-03-31/functions/arn:aws:lambda:us-west-2:598307997273:function:MicroserviceGetAll/invocations\nThu Jan 05 00:26:27 UTC 2017 : Endpoint request headers: {x-amzn-lambda-integration-tag=test-request, Authorization=******************************************************************************************************************************************************************************************************************************************************************************************************b9199d, X-Amz-Date=20170105T002627Z, x-amzn-apigateway-api-id=3fsnu7i9k5, X-Amz-Source-Arn=arn:aws:execute-api:us-west-2:598307997273:3fsnu7i9k5/null/GET/books, Accept=application/json, User-Agent=AmazonAPIGateway_3fsnu7i9k5, X-Amz-Security-Token=FQoDYXdzEOD//////////wEaDCH64uXvIvkyvuwcYyK3AzMXVe76QGF0uZ9itgHSFXvuSloZ4YO/SzRecOCAf/Bgwn+VnAWz2Aq1kO8eRfaD4SwsBUqRcnKqOnMtdR+qjtbp60vxTKvFvpK/dL9Y8/9b4V/EKy4qnfUY1A9HYUTU3vUvxATn8+9SaMp64b8ayPVrFrsN6XZ9u8AiwGpdGsx407mo2L3S7RW1uOBHPdRNjlRW9w2tz1okToFRei/7DkmDpjTLiccGc8SzLU0yWEd/8nMtkpC3O5OL0sZ/qNqsCUlRyBtrPz/hYyfx0lqjauig2rWjwdqb8bF9HmoLEc4T2UiS5TetEbadT7iTSfdVIGyKI3Bxkt9mF6LeSETrG3U2Cs2T9mrcUd [TRUNCATED]\nThu Jan 05 00:26:27 UTC 2017 : Endpoint request body after transformations: \nThu Jan 05 00:26:27 UTC 2017 : Execution failed due to configuration error: Invalid permissions on Lambda function\nThu Jan 05 00:26:27 UTC 2017 : Method completed with status: 500\n", 
+    "latency": 18
 }
 ```
 +
