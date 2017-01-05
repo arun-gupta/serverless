@@ -1,4 +1,4 @@
-package org.sample.serverless.aws.couchbase.apigateway;
+package org.sample.serverless.aws.couchbase.gateway;
 
 import org.sample.serverless.aws.couchbase.CouchbaseUtil;
 import org.sample.serverless.aws.couchbase.Book;
@@ -11,19 +11,19 @@ import com.couchbase.client.java.document.JsonDocument;
 /**
  * @author arungupta
  */
-public class BucketPost implements RequestHandler<Book, String> {
+public class BucketPost implements RequestHandler<Book, GatewayResponse> {
 
     LambdaLogger logger;
 
     @Override
-    public String handleRequest(Book request, Context context) {
+    public GatewayResponse handleRequest(Book request, Context context) {
         
         JsonDocument document;
         try {
             document = CouchbaseUtil.getBucket(logger).upsert(Book.toJson(request));
-            return document.content().toString();
+            return new GatewayResponse(200, document.toString(), GatewayResponse.HEADERS_JSON);
         } catch (JsonProcessingException ex) {
-            throw new RuntimeException(ex);
+            return new GatewayResponse(400, ex.getMessage(), GatewayResponse.HEADERS_TEXT);
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.sample.serverless.aws.couchbase.apigateway;
+package org.sample.serverless.aws.couchbase.gateway;
 
 import com.couchbase.client.java.document.json.JsonArray;
 import com.couchbase.client.java.document.json.JsonObject;
@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * @author arungupta
  */
-public class APIGatewayUtil {
+public class GatewayUtil {
 
     public static final String CONTENT_TYPE_JSON_HEADER = "Content-Type: application/json";
     public static final String CONTENT_TYPE_TEXT_HEADER = "Content-Type: text/plain";

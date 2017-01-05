@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.couchbase.client.java.query.N1qlQuery;
 import static com.couchbase.client.java.query.dsl.Expression.i;
-import org.sample.serverless.aws.couchbase.apigateway.APIGatewayUtil;
+import org.sample.serverless.aws.couchbase.gateway.GatewayUtil;
 import static com.couchbase.client.java.query.Select.select;
 
 /**
@@ -30,11 +30,8 @@ public class BucketGetAll implements RequestHandler<Book, String> {
     }
 
     public static void main(String[] args) {
-        N1qlQuery query = N1qlQuery.simple("SELECT * FROM " + CouchbaseUtil.getBucketName() + " LIMIT 10");
-        BucketGetAll bucket = new BucketGetAll();
-
-        String result = bucket.handleRequest(null, null);
+        String result = new BucketGetAll().handleRequest(null, null);
         System.out.println("Lambda main(): " + result);
-        System.out.println("API Gateway: " + APIGatewayUtil.proxyIntegration(200, APIGatewayUtil.CONTENT_TYPE_JSON_HEADER, result));
+        System.out.println("API Gateway: " + GatewayUtil.proxyIntegration(200, GatewayUtil.CONTENT_TYPE_JSON_HEADER, result));
     }
 }
