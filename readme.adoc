@@ -6,6 +6,13 @@ This repo will show how to create and deploy serverless functions using Java in 
 
 https://aws.amazon.com/lambda/
 
+Blogs:
+
+. https://blog.couchbase.com/2017/january/microservice-aws-serverless-application-model-couchbase[Microservice using AWS Serverless Application Model and Couchbase]
+. https://blog.couchbase.com/2016/december/microservice-aws-api-gateway-lambda-couchbase[Microservice using AWS API Gateway, AWS Lambda and Couchbase]
+. https://blog.couchbase.com/2016/december/aws-iot-button-lambda-couchbase[AWS IoT Button, Lambda and Couchbase]
+. https://blog.couchbase.com/2016/december/serverless-faas-aws-lambda-java[Serverless FaaS with AWS Lambda and Java]
+
 == Google Cloud Functions
 
 https://cloud.google.com/functions/
