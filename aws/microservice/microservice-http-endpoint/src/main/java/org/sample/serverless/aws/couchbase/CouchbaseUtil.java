@@ -1,6 +1,5 @@
 package org.sample.serverless.aws.couchbase;
 
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.CouchbaseCluster;
 import java.util.concurrent.TimeUnit;
