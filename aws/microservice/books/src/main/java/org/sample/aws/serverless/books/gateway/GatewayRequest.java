@@ -1,4 +1,4 @@
-package org.sample.serverless.aws.couchbase.gateway;
+package org.sample.aws.serverless.books.gateway;
 
 import java.util.Map;
 
@@ -96,6 +96,4 @@ public class GatewayRequest {
     public void setBase64Encoded(boolean base64Encoded) {
         this.base64Encoded = base64Encoded;
     }
-    
-    
 }

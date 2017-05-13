@@ -1,4 +1,4 @@
-package org.sample.serverless.aws.couchbase.gateway;
+package org.sample.aws.serverless.books.gateway;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class GatewayResponse {
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
-
+    
     public Map<String, String> getHeaders() {
         return headers;
     }

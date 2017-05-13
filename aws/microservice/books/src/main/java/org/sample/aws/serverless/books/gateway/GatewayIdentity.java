@@ -1,4 +1,4 @@
-package org.sample.serverless.aws.couchbase.gateway;
+package org.sample.aws.serverless.books.gateway;
 
 /**
  * @author arungupta
@@ -60,6 +60,4 @@ class GatewayIdentity {
     public String getUser() {
         return user;
     }
-    
-    
 }
