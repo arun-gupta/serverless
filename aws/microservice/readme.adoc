@@ -1,6 +1,6 @@
-= Microservice using AWS API Gateway, AWS Lambda and Couchbase
+= Microservice using Java, AWS Lambda, API Gateway and DynamoDB
 
-This document explains how to use AWS API Gateway and AWS Lambda to create a simple microservice. The Lambda function uses Java runtime and the data is stored in Couchbase 4.5.0 running in EC2.
+This document explains how to use AWS API Gateway and AWS Lambda to create a simple microservice. The Lambda function uses Java runtime and the data is stored in DynamoDB.
 
 Detailed steps are at http://docs.aws.amazon.com/lambda/latest/dg/with-on-demand-https-example-configure-event-source.html.
 
@@ -10,7 +10,8 @@ IAM roles will have policies and trust relationships that will allow this role t
 
 . Create a new IAM role
 +
-```aws iam create-role \
+```
+aws iam create-role \
 --role-name microserviceRole \
 --assume-role-policy-document file://./trust.json
 ```
@@ -25,35 +26,27 @@ aws iam put-role-policy \
 
 More details: http://docs.aws.amazon.com/apigateway/latest/developerguide/setting-up.html
 
-== Setup Couchbase
+== Setup DynamoDB
 
-. Launch Ubuntu 14.04 LTS EC2 instance
-. Login to the instance: `ssh -i <key> ubuntu@<public-ip>`
-. Download Couchbase: `wget http://packages.couchbase.com/releases/4.5.0/couchbase-server-community_4.5.0-ubuntu14.04_amd64.deb`
-. Install Couchbase: `sudo dpkg -i couchbase-server-community_4.5.0-ubuntu14.04_amd64.deb`
-. Login to Couchbase Console http://<public-ip>:8091 and configure Data, Query and Index service
-. Create index: `create primary index default_index on default;`
+. Create a DynamoDB table `Books`
 
 == Lambda Functions
 
-. Create a deployment package: `mvn -f microservice-http-endpoint/pom.xml package`
+. Create a deployment package: `mvn -f books/pom.xml package`
 
 === Using Serverless Application Model (SAM)
 
 This can also be deployed using AWS CLI as explained in link:readme-cli.adoc[].
 
-SAM samples: https://github.com/awslabs/serverless-application-model
-SAM specification: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md
-
-. Create bucket: `aws s3 mb s3://serverless-microservice --region us-west-2`. `us-west-2` region is one of the supported regions for API Gateway.
-. Copy JAR file to S3 bucket: `aws s3 cp microservice-http-endpoint/target/microservice-http-endpoint-1.0-SNAPSHOT.jar s3://serverless-microservice/microservice-http-endpoint-1.0-SNAPSHOT.jar`
+. Create bucket: `aws s3 mb s3://books-microservice --region us-west-1`.
+. Copy JAR file to S3 bucket: `aws s3 cp books/target/books-microservice-1.0-SNAPSHOT.jar s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar`
 . Deploy SAM
 +
 ```
 aws cloudformation deploy \
---template-file template.yml \
+--template-file app-sam.yml \
 --stack-name microservice-gateway \
---region us-west-2
+--region us-west-1
 ```
 +
 . Test
@@ -73,19 +66,12 @@ aws cloudformation deploy \
 ```
 aws cloudformation delete-stack \
 --stack-name microservice-gateway \
---region us-west-2
+--region us-west-1
 ```
 
 == Local Maven Testing
 
 . Invoke HTTP GET method using `mvn exec:java`
 
-== TODO
 
-. Create http://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html[Serverless Application Model] for the application
-. Add Single Page Application using S3 and CloudFront
-. Add authentication and authorization (may be AWS Cognito)
-. API Throttling
-. Swagger endpoint for API
-. AWS Step Function: https://aws.amazon.com/step-functions/ and https://www.youtube.com/watch?v=75MRve4nv8s.
-. https://aws.amazon.com/blogs/compute/continuous-deployment-for-serverless-applications/[Continuous Deployment for Serverless Application]
+
