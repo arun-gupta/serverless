@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Microservice using Lambda, API Gateway, and DynamoDB
+Resources:
+  MicroserviceGetAll:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.sample.aws.serverless.books.BookGetAll
+      Runtime: java8
+      CodeUri: s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar
+      Timeout: 30
+      MemorySize: 1024
+      Environment:
+        Variables:
+          DYNAMODB_REGION: us-west-1
+      Role: arn:aws:iam::091144949931:role/microserviceRole
+  MicroservicePost:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.sample.aws.serverless.books.BookPost
+      Runtime: java8
+      CodeUri: s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar
+      Timeout: 30
+      MemorySize: 1024
+      Environment:
+        Variables:
+          DYNAMODB_REGION: us-west-1
+      Role: arn:aws:iam::091144949931:role/microserviceRole
+  MicroserviceGetAllGateway:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.sample.aws.serverless.books.gateway.BookGetAll
+      Runtime: java8
+      CodeUri: s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar
+      Timeout: 30
+      MemorySize: 1024
+      Environment:
+        Variables:
+          DYNAMODB_REGION: us-west-1
+      Role: arn:aws:iam::091144949931:role/microserviceRole
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: get
+  MicroservicePostGateway:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: org.sample.aws.serverless.books.gateway.BookPost
+      Runtime: java8
+      CodeUri: s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar
+      Timeout: 30
+      MemorySize: 1024
+      Environment:
+        Variables:
+          DYNAMODB_REGION: us-west-1
+      Role: arn:aws:iam::091144949931:role/microserviceRole
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: post
