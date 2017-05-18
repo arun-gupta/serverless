@@ -17,11 +17,13 @@ public class BookGetAll implements RequestHandler<Book, String> {
 
     @Override
     public String handleRequest(Book request, Context context) {
-    	ScanRequest scanRequest = new ScanRequest().withTableName("Reply");
+    	ScanRequest scanRequest = new ScanRequest().withTableName("Books");
     	ScanResult result = DynamoDBUtil.getClient().scan(scanRequest);
+        System.out.println("-- books listing start --");
     	for (Map<String, AttributeValue> item : result.getItems()){
     	    System.out.println(item);
     	}
+        System.out.println("-- books listing end --");
         return result.getItems().toString();
     }
 
