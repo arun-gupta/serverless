@@ -71,8 +71,8 @@
                     <accessKey>${aws_access_key_id}</accessKey>
                     <secretKey>${aws_secret_access_key}</secretKey>
                     <bucketName>books-microservice</bucketName>
-                    <source>target/${artifactId}-${version}.jar</source>
-                    <destination>${artifactId}-${version}.jar</destination>
+                    <source>target/${project.artifactId}-${project.version}.jar</source>
+                    <destination>${project.artifactId}-${project.version}.jar</destination>
                 </configuration>
                 <executions>
                     <execution>
