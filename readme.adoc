@@ -2,7 +2,7 @@
 
 This repo will show how to create and deploy serverless functions using Java in different cloud providers.
 
-== Amazon Web Services Lamda
+== Amazon Web Services Lambda
 
 https://aws.amazon.com/lambda/
 
@@ -13,16 +13,10 @@ Blogs:
 . https://blog.couchbase.com/2016/december/aws-iot-button-lambda-couchbase[AWS IoT Button, Lambda and Couchbase]
 . https://blog.couchbase.com/2016/december/serverless-faas-aws-lambda-java[Serverless FaaS with AWS Lambda and Java]
 
-== Google Cloud Functions
+== Other Serverless Services
 
-https://cloud.google.com/functions/
-
-== Azure Functions
-
-https://azure.microsoft.com/en-us/services/functions/
-
-== OpenWhisk
-
-https://developer.ibm.com/openwhisk/
+. https://cloud.google.com/functions/[Google Cloud Functions]
+. https://azure.microsoft.com/en-us/services/functions/[Azure Functions]
+. https://developer.ibm.com/openwhisk/[IBM OpenWhisk]
 
 
