@@ -8,6 +8,7 @@ Resources:
       Handler: org.sample.aws.serverless.books.BookGetAll
       Runtime: java8
       CodeUri: s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar
+      Description: Get all books
       Timeout: 30
       MemorySize: 1024
       Environment:
@@ -20,6 +21,7 @@ Resources:
       Handler: org.sample.aws.serverless.books.BookPost
       Runtime: java8
       CodeUri: s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar
+      Description: Create one book
       Timeout: 30
       MemorySize: 1024
       Environment:
@@ -32,6 +34,7 @@ Resources:
       Handler: org.sample.aws.serverless.books.gateway.BookGetAll
       Runtime: java8
       CodeUri: s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar
+      Description: Get all books using API Gateway
       Timeout: 30
       MemorySize: 1024
       Environment:
@@ -50,6 +53,7 @@ Resources:
       Handler: org.sample.aws.serverless.books.gateway.BookPost
       Runtime: java8
       CodeUri: s3://books-microservice/books-microservice-1.0-SNAPSHOT.jar
+      Description: Create one book using API Gateway
       Timeout: 30
       MemorySize: 1024
       Environment:
