@@ -45,7 +45,7 @@ This can also be deployed using AWS CLI as explained in link:readme-cli.adoc[].
 ```
 aws cloudformation deploy \
 --template-file app-sam.yml \
---stack-name microservice-gateway \
+--stack-name books-microservice \
 --region us-west-1
 ```
 +
@@ -65,7 +65,7 @@ aws cloudformation deploy \
 +
 ```
 aws cloudformation delete-stack \
---stack-name microservice-gateway \
+--stack-name books-microservice \
 --region us-west-1
 ```
 
