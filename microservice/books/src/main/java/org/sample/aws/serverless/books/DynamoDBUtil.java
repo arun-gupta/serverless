@@ -14,7 +14,7 @@ public class DynamoDBUtil {
     private static AmazonDynamoDB dynamodbClient;
     private static Table table;
 
-    public static AmazonDynamoDB getClient() {
+    public static final AmazonDynamoDB getClient() {
         if (null != dynamodbClient) {
             return dynamodbClient;
         }
@@ -29,16 +29,19 @@ public class DynamoDBUtil {
         dynamodbClient = AmazonDynamoDBClientBuilder.standard()
                 .withRegion(region)
                 .build();
+        
+        System.out.println("Got DynamoDB client...");
 
         return dynamodbClient;
     }
 
-    public static Table getTable() {
+    public static final Table getTable() {
         if (null != table) {
             return table;
         }
 
         table = new DynamoDB(getClient()).getTable("Books");
+        System.out.println("Got DynamoDB table...");
         return table;
     }
 }
