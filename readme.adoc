@@ -1,6 +1,6 @@
 = Java Serverless Samples
 
-This repo will show how to create and deploy serverless functions using Java in different cloud providers.
+This repo will show how to create and deploy serverless functions using Java in Amazon Web Services.
 
 == Amazon Web Services Lambda
 
