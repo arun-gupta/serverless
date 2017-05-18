@@ -25,7 +25,8 @@
     {
       "Effect": "Allow",
       "Action": [
-          "lambda:*"
+          "lambda:*",
+          "dynamodb:*"
       ],
       "Resource": "*"
     }
