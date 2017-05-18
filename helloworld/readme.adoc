@@ -10,9 +10,9 @@ Java + Lambda: http://docs.aws.amazon.com/lambda/latest/dg/java-programming-mode
 ```
 aws lambda create-function \
 --function-name HelloWorld \
---role arn:aws:iam::598307997273:role/service-role/myLambdaRole \
+--role arn:aws:iam::091144949931:role/microserviceRole \
 --handler org.sample.serverless.aws.helloworld.HelloWorld \
---zip-file fileb:///Users/arungupta/workspaces/serverless/aws/helloworld/helloworld/target/helloworld-1.0-SNAPSHOT.jar \
+--zip-file fileb:///Users/argu/workspaces/serverless/helloworld/helloworld/target/helloworld-1.0-SNAPSHOT.jar \
 --description "Java Hello World" \
 --runtime java8  \
 --region us-west-1 \
@@ -25,15 +25,18 @@ Shows output:
 +
 ```
 {
-    "CodeSha256": "7kxVI356SYg7vg9BdLRSEJ2U7MaMbhwOZG9P7iNlMsM=", 
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    }, 
+    "CodeSha256": "lus8dxJVghEd6hHggnion0NG29pVUyKehSLTpIb1Fdw=", 
     "FunctionName": "HelloWorld", 
-    "CodeSize": 11782, 
+    "CodeSize": 4661, 
     "MemorySize": 1024, 
-    "FunctionArn": "arn:aws:lambda:us-west-1:598307997273:function:HelloWorld", 
-    "Version": "2", 
-    "Role": "arn:aws:iam::598307997273:role/service-role/myLambdaRole", 
+    "FunctionArn": "arn:aws:lambda:us-west-1:091144949931:function:HelloWorld", 
+    "Version": "1", 
+    "Role": "arn:aws:iam::091144949931:role/microserviceRole", 
     "Timeout": 30, 
-    "LastModified": "2016-12-16T03:02:34.590+0000", 
+    "LastModified": "2017-05-18T03:26:45.952+0000", 
     "Handler": "org.sample.serverless.aws.helloworld.HelloWorld", 
     "Runtime": "java8", 
     "Description": "Java Hello World"
@@ -66,7 +69,7 @@ Output from the command is in `helloworld.out`.
 ```
 aws lambda update-function-code \
   --function-name HelloWorld \
-  --zip-file fileb:///Users/arungupta/workspaces/serverless/aws/helloworld/helloworld/target/helloworld-1.0-SNAPSHOT.jar \
+  --zip-file fileb:///Users/argu/workspaces/serverless/helloworld/helloworld/target/helloworld-1.0-SNAPSHOT.jar \
   --region us-west-1 \
   --publish
 ```
@@ -83,21 +86,25 @@ Shows output:
 {
     "Code": {
         "RepositoryType": "S3", 
-        "Location": "https://awslambda-us-west-1-tasks.s3-us-west-1.amazonaws.com/snapshots/598307997273/HelloWorld-b3621a51-aa28-498a-9a69-7541bc9a50f5?X-Amz-Security-Token=FQoDYXdzEEwaDPvHdO71iR5QlQxFpSK3AwIyaqiqO6N47IcWGJios%2FvWg79kcFh%2BVRHCfstcCWFCs2qC5ojZ4r%2F4LEmFL6aLTSNVZEpfJwSpi3a2xpYgqUdd3jJfR7nK8XnTqbF2n87xUANO1xnnRryNlDFpVLwTBOq5haCSqNXoQLgVEA6RNzhmOpNEBN136dnebVtGFZkkweXE7SHtV%2BzVfGzShgxWIDj8oCr2YEREIVdfmlRZ7QnMYKCfUIGDezC0iLIQeXnwMvZp1BC6dq6CDC6KOiZ6kp8SxJikKnoiSFtYcDPQacNl05fqbt7cGFmdtrHbRLyibYxCwB%2FsXQueA7iXiuVARVzOw9HvIEnvN5geT68r%2Fy0DnlRUPtw5ZUu%2FHT66uNGEn8pS8ki6k2fQWbSoIploBGA7l8H%2FmqEmg7dlc68UKnmYLaAv8GDInA9K7ndL%2Fs0%2BD3Gv7WJMEPXiOpTuh1lvRZ%2BGXXwQcuDfZX0i3L6elgFfDPh7CIpwZGvYmn22oiU%2Bgqc%2FjDSvGaOTzLGMjSodfaN%2BuhFvFAcv%2FsAUtIgZ5LksFkC%2FW189CzLFS7HyIE%2BofPUesP75p67Rm2G%2FDBWfkaYq886GRfIo8c%2FgwgU%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20161219T195528Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIAJLAOLVLJ3LXPJOFQ%2F20161219%2Fus-west-1%2Fs3%2Faws4_request&X-Amz-Signature=82d2497a61e9ae749901b8532b77cf9cbbdff8db33538bd74a1d0ee9d4cf61c8"
+        "Location": "https://awslambda-us-west-1-tasks.s3-us-west-1.amazonaws.com/snapshots/091144949931/HelloWorld-2a01d351-57df-4640-8a5e-d2d9929dffbb?X-Amz-Security-Token=FQoDYXdzEDwaDKwfMARMsk2bNgQhryK3A8d85E1h8f%2BbNP%2FWMuUkCEeU2OciJOi87uhojef1zF57ebVuyvGTH1GEVPqkHi5DLMs2KVum4KqImCCC%2BszRFBGY%2FwpV%2F8at3CVehAWn1r1fI5t5A5t7ljEsP9%2F0%2B6o03%2FBrCXLelrCA3SBZrFHq6mR7nD%2BWHOTZCqiL1hjhzOZcuwobClOMQmMjXTVqMfIllE7%2FuNm1lXkXYxuk2HU5zTH6X7ws8Ba8QaUKu9IgJhd2Gt9EXaOMo1Zkkd7qct%2FFvTAFFqxFdpkP%2F5YFkf1wN%2FW83UxEt5%2FiipyvvpfsY%2B2LML7nS8fG2ml90ubwz4zJ%2FmVGITqqQEK5NHphSKUCNuMOnKTdY7nQeL9diM26DUUsdE85f80xmiuV%2FPU69XskKIl%2F3GMhlgafVVt%2BdULWIEiCWt57LpSAevGHI4fteHAlyWqh4dejfZqwJIBrobTIEE5wE9iAF7IEc5dexlq5arkIcD6tGn9iFpiCYalpU01G7bxHQvkUgtsBfwEh4V1aU8d2%2BiX10kY2J5%2BUjD1hHr%2Fkg1dYfFjFkrukuYJtZtPa4NyPr2B9NGNZn%2BY6X5tkGP%2BwJT%2BmyOco0I30yAU%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20170518T032855Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Credential=ASIAJFWAOXCYSLK7OKYA%2F20170518%2Fus-west-1%2Fs3%2Faws4_request&X-Amz-Signature=7102c256ced0b4a895b3c73fa3d441c089d3d8ac9c322c2020e4949f7e3db625"
     }, 
     "Configuration": {
+        "TracingConfig": {
+            "Mode": "PassThrough"
+        }, 
         "Version": "$LATEST", 
-        "CodeSha256": "7kxVI356SYg7vg9BdLRSEJ2U7MaMbhwOZG9P7iNlMsM=", 
+        "CodeSha256": "lus8dxJVghEd6hHggnion0NG29pVUyKehSLTpIb1Fdw=", 
         "FunctionName": "HelloWorld", 
         "MemorySize": 1024, 
-        "CodeSize": 11782, 
-        "FunctionArn": "arn:aws:lambda:us-west-1:598307997273:function:HelloWorld", 
+        "CodeSize": 4661, 
+        "FunctionArn": "arn:aws:lambda:us-west-1:091144949931:function:HelloWorld", 
         "Handler": "org.sample.serverless.aws.helloworld.HelloWorld", 
-        "Role": "arn:aws:iam::598307997273:role/service-role/myLambdaRole", 
+        "Role": "arn:aws:iam::091144949931:role/microserviceRole", 
         "Timeout": 30, 
-        "LastModified": "2016-12-16T03:02:34.590+0000", 
+        "LastModified": "2017-05-18T03:26:45.952+0000", 
         "Runtime": "java8", 
         "Description": "Java Hello World"
     }
 }
 ```
+
