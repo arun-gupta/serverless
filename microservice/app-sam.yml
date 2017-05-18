@@ -2,7 +2,7 @@ AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Microservice using Lambda, API Gateway, and DynamoDB
 Resources:
-  MicroserviceGetAll:
+  BookGetAll:
     Type: AWS::Serverless::Function
     Properties:
       Handler: org.sample.aws.serverless.books.BookGetAll
@@ -14,7 +14,7 @@ Resources:
         Variables:
           DYNAMODB_REGION: us-west-1
       Role: arn:aws:iam::091144949931:role/microserviceRole
-  MicroservicePost:
+  BookPost:
     Type: AWS::Serverless::Function
     Properties:
       Handler: org.sample.aws.serverless.books.BookPost
@@ -26,7 +26,7 @@ Resources:
         Variables:
           DYNAMODB_REGION: us-west-1
       Role: arn:aws:iam::091144949931:role/microserviceRole
-  MicroserviceGetAllGateway:
+  BookGetAllGateway:
     Type: AWS::Serverless::Function
     Properties:
       Handler: org.sample.aws.serverless.books.gateway.BookGetAll
@@ -44,7 +44,7 @@ Resources:
           Properties:
             Path: /books
             Method: get
-  MicroservicePostGateway:
+  BookPostGateway:
     Type: AWS::Serverless::Function
     Properties:
       Handler: org.sample.aws.serverless.books.gateway.BookPost
