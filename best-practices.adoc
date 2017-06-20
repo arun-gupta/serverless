@@ -1,0 +1,9 @@
+= Best Practices for AWS Lambda
+
+. One fat JAR with multiple handlers or multiple JARs with single handler
+. How multiple versions of Lambda functions can be managed?
+. Organization of `pom.xml`
+. Sharing code between different Lambda functions
+. Different API versions accessing Lambda functions
+. Dev, test and production in a team environment
+
