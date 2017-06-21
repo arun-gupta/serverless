@@ -1,7 +1,8 @@
 = Best Practices for AWS Lambda
 
 . Keep Lambda and function separate - Write your function to be Lambda-agnostic. Then write a thin Lambda handler which acts as a proxy or router.
-. Packaging - One fat JAR with multiple handlers or multiple JARs with single handler? Its recommended to package one Lambda in a single JAR file. This follows Separation of Concerns principle.
+. Cold start - Write smaller functions with fewer dependencies. This will minimize time for cold start.
+. Packaging - Package one Lambda in a single JAR file. This follows Separation of Concerns principle. Packaging multiple Lambda functions in a single JAR will increase the cold start time as well.
 . How multiple versions of Lambda functions can be managed?
 . Organization of `pom.xml` with multiple Lambdas
 . Sharing code between different Lambda functions - Create a library and package with multiple Lambda functions.
@@ -9,4 +10,8 @@
 . Dev, test and production in a team environment
 . Swagger integration
 . Database connection - Use a database connection pooling library instead of initializing database connection for each Lambda invocation.
+. Language-specific wrappers
+.. Java - https://github.com/awslabs/aws-serverless-java-container allows to run Spring, Jersey, Spark, and other apps inside AWS Lambda.
+.. Node.js - https://github.com/awslabs/aws-serverless-express 
+. Serverless Application Model - https://github.com/awslabs/serverless-application-model
 
