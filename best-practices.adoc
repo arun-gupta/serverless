@@ -1,6 +1,6 @@
 = Best Practices for AWS Lambda
 
-. Keep Lambda and function separate: Write your function to be Lambda-agnostic. Then write a thin Lambda handler which acts as a proxy or router.
+. Keep Lambda and function separate: Write your function to be Lambda-agnostic. Then write a thin Lambda handler which acts as a proxy or router. This allows the core functionality to be easily testable as well.
 . Cold start: Write smaller functions with fewer dependencies. This will minimize time for cold start.
 . Packaging: Package one Lambda in a single JAR file. This follows Separation of Concerns principle. Packaging multiple Lambda functions in a single JAR will increase the cold start time as well.
 . How multiple versions of Lambda functions can be managed?
@@ -10,6 +10,8 @@
 . Dev, test and production in a team environment
 . Swagger integration
 . Database connection: Use a database connection pooling library instead of initializing database connection for each Lambda invocation.
+.. "`Cold`" and "`Warm`" - Initialize database connection variables outside the handler function. This allows the database connection to be reused if the function is "`warm`". The amount of time after which the function becomes "`cold`" can change.
+.. TODO: ADD CODE EXAMPLE
 . Language-specific wrappers
 .. Java: https://github.com/awslabs/aws-serverless-java-container allows to run Spring, Jersey, Spark, and other apps inside AWS Lambda.
 .. Node.js: https://github.com/awslabs/aws-serverless-express 
