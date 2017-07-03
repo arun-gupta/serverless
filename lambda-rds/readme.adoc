@@ -1,0 +1,37 @@
+= AWS Lambda, RDS and Java
+
+. Create RDS
++
+```
+aws rds create-db-instance \
+    --db-instance-identifier LambdaMySQLTest2 \
+    --db-instance-class db.r3.large \
+    --engine MySQL \
+    --port 8193 \
+    --allocated-storage 5 \
+    --db-name ExampleDB \
+    --master-username master \
+    --master-user-password master123 \
+    --backup-retention-period 3 
+```
++
+. Get instance id:
++
+```
+aws rds describe-db-instances | jq ".DBInstances[0].Endpoint.Address"
+```
++
+. Install MySQL client: `brew install mysql`
+. Create a table:
++
+```
+mysql -h <endpoint> -P 3306 -u master -pmaster123 -e "CREATE TABLE EMPLOYEE(id VARCHAR(20), name VARCHAR(20))"
+```
++
+. Add a few rows
++
+```
+mysql -h <endpoint> -P 3306 -u master -p master123 -e "INSERT "
+```
+
+
