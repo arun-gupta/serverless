@@ -19,8 +19,6 @@ aws rds create-db-instance \
     --backup-retention-period 3 
 ```
 +
-NOTE: Only port 8192 - 8200 work in the firewall.
-+
 . Create inbound role for the security group:
 .. Get security group id:
 +
@@ -87,4 +85,4 @@ mysql> exit;
 Bye
 ```
 
-
+== 
