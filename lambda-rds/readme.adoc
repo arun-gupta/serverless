@@ -1,6 +1,8 @@
 = AWS Lambda, RDS and Java
 
-This project shows how to connect a Amazon Relational Database Service (RDS) instance from an AWS Lambda function.
+This project shows how to invoke a MySQL instance from an AWS Lambda function.
+
+MySQL instance will be hosted using Amazon Relational Database Service (RDS).
 
 == Create and Configure RDS
 
@@ -86,6 +88,5 @@ Query OK, 1 row affected (0.02 sec)
 mysql> exit;
 Bye
 ```
-
 
 
