@@ -1,8 +1,6 @@
 = AWS Lambda, RDS and Java
 
-This project shows how to invoke a MySQL instance from an AWS Lambda function.
-
-MySQL instance will be hosted using Amazon Relational Database Service (RDS).
+This project shows how to manipulate a database table in MySQL from an AWS Lambda function. The MySQL instance will be hosted using Amazon Relational Database Service (RDS). AWS Lambda function will be written using Java and packaged using Maven. Serverless Application Model (SAM) will be used to deploy the Lambda function. AWS CLI will be used to invoke the function.
 
 == Create and Configure RDS
 
@@ -10,7 +8,7 @@ MySQL instance will be hosted using Amazon Relational Database Service (RDS).
 +
 ```
 aws rds create-db-instance \
-    --db-instance-identifier LambdaMySQLTest2 \
+    --db-instance-identifier LambdaMySQLTest \
     --db-instance-class db.r3.large \
     --engine MySQL \
     --port 3006 \
