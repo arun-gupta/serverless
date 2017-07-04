@@ -1,6 +1,6 @@
 = AWS Lambda, RDS and Java
 
-This project shows how to manipulate a database table in MySQL from an AWS Lambda function. The MySQL instance will be hosted using Amazon Relational Database Service (RDS). AWS Lambda function will be written using Java and packaged using Maven. Serverless Application Model (SAM) will be used to deploy the Lambda function. AWS CLI will be used to invoke the function.
+This project shows how to manipulate a database table in MySQL from an AWS Lambda function. The MySQL instance is hosted using Amazon Relational Database Service (RDS). AWS Lambda function is written using Java and packaged using Maven. Serverless Application Model (SAM) is used to deploy the Lambda function. AWS CLI is used to invoke the function.
 
 == Create and Configure RDS
 
