@@ -1,55 +1,20 @@
 = Amazon Web Services Lambda Functions
 
-Java + Lambda: http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html
+This is a Hello World for writing AWS Lambda function using Java.AWS Lambda function is written using Java and packaged using Maven. Serverless Application Model (SAM) is used to deploy the Lambda function. AWS CLI is used to invoke the function.
 
-. Write the http://docs.aws.amazon.com/lambda/latest/dg/java-programming-model.html[code]
-.. http://docs.aws.amazon.com/lambda/latest/dg/java-create-jar-pkg-maven-no-ide.html[sample `pom.xml`]
-. Create http://docs.aws.amazon.com/lambda/latest/dg/lambda-java-how-to-create-deployment-package.html[deployment package]
-. Create a function:
+. Create http://docs.aws.amazon.com/lambda/latest/dg/lambda-java-how-to-create-deployment-package.html[deployment package]: `mvn package`
+. Upload package to S3: `mvn install`
+. Deploy Lambda function:
 +
 ```
-aws lambda create-function \
---function-name HelloWorld \
---role arn:aws:iam::091144949931:role/microserviceRole \
---handler org.sample.serverless.aws.helloworld.HelloWorld \
---zip-file fileb:///Users/argu/workspaces/serverless/helloworld/helloworld/target/helloworld-1.0-SNAPSHOT.jar \
---description "Java Hello World" \
---runtime java8  \
---region us-west-1 \
---timeout 30 \
---memory-size 1024 \
---publish
+aws cloudformation deploy --template-file app.yml --stack-name helloworld
 ```
 +
-Shows output:
-+
-```
-{
-    "TracingConfig": {
-        "Mode": "PassThrough"
-    }, 
-    "CodeSha256": "lus8dxJVghEd6hHggnion0NG29pVUyKehSLTpIb1Fdw=", 
-    "FunctionName": "HelloWorld", 
-    "CodeSize": 4661, 
-    "MemorySize": 1024, 
-    "FunctionArn": "arn:aws:lambda:us-west-1:091144949931:function:HelloWorld", 
-    "Version": "1", 
-    "Role": "arn:aws:iam::091144949931:role/microserviceRole", 
-    "Timeout": 30, 
-    "LastModified": "2017-05-18T03:26:45.952+0000", 
-    "Handler": "org.sample.serverless.aws.helloworld.HelloWorld", 
-    "Runtime": "java8", 
-    "Description": "Java Hello World"
-}
-```
-+
-.. Get global role name from https://console.aws.amazon.com/iam/home?region=us-west-1#/roles
 . Test the function:
 +
 ```
 aws lambda invoke \
 --function-name HelloWorld \
---region us-west-1 \
 --payload '{ "firstName": "John", "lastName": "Smith" }' \
 helloworld.out
 ```
@@ -62,22 +27,26 @@ Shows result:
 }
 ```
 +
-Output from the command is in `helloworld.out`.
+Output from the command is in `helloworld.out` and looks like:
++
+```
+{"greetings":"Hello John Smith."}
+```
 +
 . Update the function:
+.. Delete the deployment:
 +
 ```
-aws lambda update-function-code \
-  --function-name HelloWorld \
-  --zip-file fileb:///Users/argu/workspaces/serverless/helloworld/helloworld/target/helloworld-1.0-SNAPSHOT.jar \
-  --region us-west-1 \
-  --publish
+aws cloudformation delete-stack --stack-name helloworld
 ```
++
+.. Package and upload: `mvn package install`
+.. Deploy: `aws cloudformation deploy --template-file app.yml --stack-name helloworld`
 +
 . Get more details about the function:
 +
 ```
-aws lambda get-function --function-name HelloWorld --region us-west-1
+aws lambda get-function --function-name HelloWorld
 ```
 +
 Shows output:

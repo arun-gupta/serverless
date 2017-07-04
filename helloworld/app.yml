@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Java + Lambda Hello World
+Resources:
+  HelloWorld:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: HelloWorld
+      Handler: org.sample.serverless.aws.helloworld.HelloWorld
+      Runtime: java8
+      CodeUri: s3://arungupta/helloworld-1.0-SNAPSHOT.jar
+      Description: Hello Serverless World
+      Timeout: 30
+      MemorySize: 1024
+      Role: arn:aws:iam::091144949931:role/microserviceRole
