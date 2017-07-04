@@ -1,5 +1,9 @@
 = AWS Lambda, RDS and Java
 
+This project shows how to connect a Amazon Relational Database Service (RDS) instance from an AWS Lambda function.
+
+== Create and Configure RDS
+
 . Create RDS instance
 +
 ```
@@ -82,5 +86,6 @@ Query OK, 1 row affected (0.02 sec)
 mysql> exit;
 Bye
 ```
+
 
 
