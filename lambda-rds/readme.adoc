@@ -85,4 +85,20 @@ mysql> exit;
 Bye
 ```
 
-== 
+== Package and Deploy Lambda Function
+
+. Create a package: `mvn package`
+. Upload to S3: `mvn install`
+. Deploy Lambda: `aws cloudformation deploy --template-file app.yml --stack-name employee`
+. Invoke Lambda:
++
+```
+aws lambda invoke \
+--function-name Employee \
+--payload '{ "id": 10, "name": "Smith" }' \
+employee.out
+```
++
+. Delete Lambda: `aws cloudformation delete-stack --stack-name employee`
+
+
