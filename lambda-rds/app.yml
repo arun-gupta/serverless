@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Java + RDS Lambda Function
+Resources:
+  Employee:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: Employee
+      Handler: org.sample.serverless.aws.rds.EmployeeHandler
+      Runtime: java8
+      CodeUri: s3://arungupta/employee-1.0-SNAPSHOT.jar
+      Description: Manage Employee Database
+      Timeout: 30
+      MemorySize: 1024
+      Environment:
+        Variables:
+          RDS_HOSTNAME: lambdamysqltest.ceqhe5auupjj.us-west-1.rds.amazonaws.com:3306
+          RDS_DB_NAME: ExampleDB
+          RDS_USERNAME: master
+          RDS_PASSWORD: master123
+      Role: arn:aws:iam::091144949931:role/microserviceRole
